@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if(snap.snapshot.value != null){
 
           if((snap.snapshot.value as Map)["blockStatus"] == "no"){
-            Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+            Navigator.pushReplacementNamed(context,'/home_screen');
           }
           else{
             FirebaseAuth.instance.signOut();

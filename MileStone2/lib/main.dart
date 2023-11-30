@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/UpcommingRides_screen':(context) => UpcommingRides(),
         '/OrderTracking_screen':(context) => OrderTracking(),
         '/Cart_screen':(context) => CartScreen(),
+        '/home_screen':(context) => MyScreen(),
       },
     );
   }
