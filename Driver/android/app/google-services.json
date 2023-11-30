@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "274313832049",
+    "firebase_url": "https://mobileprogramming-carpool-default-rtdb.firebaseio.com",
+    "project_id": "mobileprogramming-carpool",
+    "storage_bucket": "mobileprogramming-carpool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274313832049:android:3889d23ee377e544cb5dd0",
+        "android_client_info": {
+          "package_name": "com.example.driver_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCChoo-yL72HJMv9VAJbDkJ7mjeTpbDSdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274313832049:android:e758d7366f7fb65ccb5dd0",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCChoo-yL72HJMv9VAJbDkJ7mjeTpbDSdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

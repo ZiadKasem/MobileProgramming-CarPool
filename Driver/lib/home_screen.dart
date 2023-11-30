@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 void main() {
@@ -30,14 +29,14 @@ class _MyScreenState extends State<MyScreen> {
         print("Retrieved Data: ${event.snapshot.value}");
 
         // The retrieved data is a map, convert entries to a list
-        var data = (event.snapshot.value as Map<dynamic, dynamic>).entries;
+        var data = (event.snapshot.value as Map<dynamic, dynamic>)?.entries;
 
         if (data != null) {
           setState(() {
             mapRoutes = data
                 .map((entry) => Map<String, String>.from({
-              'From': '${entry.value['From']}',
-              'To': '${entry.value['To']}',
+              'From': 'From:${entry.value['From']}',
+              'To': 'To:${entry.value['To']}',
               'Time': entry.value['Time'],
             }))
                 .toList();
@@ -50,7 +49,26 @@ class _MyScreenState extends State<MyScreen> {
   }
 
 
+  void _addRoute() {
+    String from = fromController.text.trim();
+    String to = toController.text.trim();
+    String time = timeController.text.trim();
 
+    if (from.isNotEmpty && to.isNotEmpty && time.isNotEmpty) {
+      _databaseReference.push().set({
+        'From': 'From:$from',
+        'To': 'To:$to',
+        'Time': time,
+      });
+
+      // Clear the text controllers after adding a route
+      fromController.clear();
+      toController.clear();
+      timeController.clear();
+    } else {
+      print("One or more fields are empty");
+    }
+  }
 
 
   Widget build(BuildContext context) {
@@ -63,7 +81,26 @@ class _MyScreenState extends State<MyScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Text("will implement here search bar"),
+            TextField(
+              controller: fromController,
+              decoration: InputDecoration(labelText: 'From'),
+            ),
+            TextField(
+              controller: toController,
+              decoration: InputDecoration(labelText: 'To'),
+            ),
+            TextField(
+              controller: timeController,
+              decoration: InputDecoration(labelText: 'Time'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addRoute();
+                // Adding print statement to check mapRoutes after adding a route
+                print("Updated mapRoutes: $mapRoutes");
+              },
+              child: Text('Add Route'),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: mapRoutes.length,
@@ -134,17 +171,8 @@ class _MyScreenState extends State<MyScreen> {
     return ListTile(
       title: Text(title),
       onTap: () {
-        if (title != 'Logout')
-        {
-          Navigator.pop(context); // Close the drawer
-          Navigator.pushNamed(context, route);
-        }
-        else{
-          Navigator.pop(context); // Close the drawer
-          FirebaseAuth.instance.signOut();
-          Navigator.pushReplacementNamed(context, route);
-        }
-
+        Navigator.pop(context); // Close the drawer
+        Navigator.pushNamed(context, route);
       },
     );
   }
