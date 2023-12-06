@@ -1,11 +1,17 @@
 phase1:
-	Keeplogin 
-	modify User Profile
+	Keeplogin						 Done
+	modify User Profile					 Done
  	User Edit Profile 
+	Sync
 	login page with sign up : make sure email not registered before	
 	Keep signing it
 
 
+
+
+
+read profile from local incase no internet
+when update/edit go edit both local and firebase
 
 
 ------------------------------------------------------------

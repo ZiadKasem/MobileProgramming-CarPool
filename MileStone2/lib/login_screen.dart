@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project/home_screen.dart';
 import 'package:project/signup_screen.dart';
 
-import 'methods/reusable_methods.dart';
+import 'reusable/reusable_methods.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
