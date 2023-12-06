@@ -35,8 +35,8 @@ class _MyScreenState extends State<MyScreen> {
           setState(() {
             mapRoutes = data
                 .map((entry) => Map<String, String>.from({
-              'From': 'From:${entry.value['From']}',
-              'To': 'To:${entry.value['To']}',
+              'From': '${entry.value['From']}',
+              'To': '${entry.value['To']}',
               'Time': entry.value['Time'],
             }))
                 .toList();
@@ -56,8 +56,8 @@ class _MyScreenState extends State<MyScreen> {
 
     if (from.isNotEmpty && to.isNotEmpty && time.isNotEmpty) {
       _databaseReference.push().set({
-        'From': 'From:$from',
-        'To': 'To:$to',
+        'From': '$from',
+        'To': '$to',
         'Time': time,
       });
 

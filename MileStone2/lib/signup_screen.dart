@@ -60,6 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "email":emailTextEditingController.text.trim(),
       "phone":phoneTextEditingController.text.trim(),
       "id":userFirebase.uid,
+      "Type":"USER",
       "blockStatus":"no",
     };
     usersRef.set(userDataMap);
@@ -200,9 +201,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-
-
-
 
     );
   }

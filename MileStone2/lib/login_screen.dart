@@ -30,7 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
       rMethods.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
     }
     else{
-      LogInUser();
+      if(emailTextEditingController.text == "test@eng.asu.edu.eg"){// used to bypass the authentication --for the aid of testing
+        Navigator.pushReplacementNamed(context,'/home_screen');
+      }
+      else
+        LogInUser();
     }
 
   }

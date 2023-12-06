@@ -8,6 +8,7 @@ import 'package:project/order_tracking.dart';
 import 'package:project/profile.dart';
 import 'package:project/upcoming_rides.dart';
 
+import 'Authentication/auth.dart';
 import 'firebase_options.dart';
 
 void main()async {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
-      home: LoginScreen(),
+      home: AuthPage(),
       routes: {
         '/Login_screen': (context) => LoginScreen(),
         '/Profile_screen': (context) => ProfileScreen(),
