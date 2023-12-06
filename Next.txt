@@ -1,17 +1,22 @@
 phase1:
-	Keeplogin						 Done
-	modify User Profile					 Done
- 	User Edit Profile 
-	Sync
-	login page with sign up : make sure email not registered before	
-	Keep signing it
+	Keeplogin						Done
+	modify User Profile					Done
+ 	User Edit Profile 					Done
+	Email not registered before				Done
+	sync{
+	step1:write in the local database
+	step2:check internet connection
+	step3:read from local DB when no internet 
+	
+	read profile from local in case no internet
+	when update/edit go edit both local and firebase
+	}
 
 
 
 
 
-read profile from local incase no internet
-when update/edit go edit both local and firebase
+
 
 
 ------------------------------------------------------------
