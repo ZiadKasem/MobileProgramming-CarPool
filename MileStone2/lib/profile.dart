@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'reusable/Text_box_component.dart';
 import 'Local Database/My_Database.dart';
+import 'reusable/reusable_methods.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -22,19 +23,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Database localDatabase;
   late MyDatabaseClass myDatabaseClass;
 
+  ReusableMethods rMethods = new ReusableMethods();
+
   @override
   void initState() {
     super.initState();
     currentUser = FirebaseAuth.instance.currentUser!;
     usersRef = FirebaseDatabase.instance.reference();
     snapshot = usersRef.child('users/${currentUser.uid}');
-    readAttributes();
-    initLocalDatabase();
+
     if (username == null) username = "loading";
     if (mobile == null) mobile = "loading";
-    snapshot.onValue.listen((event) {
-      readAttributes();
+    rMethods.checkConnectivity(context).then((int result)async {
+      await initLocalDatabase();
+      if (result ==1) {
+
+
+          print("IF CONDITION OF CONNECTIVITY IS TRUE");
+          snapshot.onValue.listen((event) {
+            readAttributes();
+          });
+
+      } else if (result == 0) {
+        // read data of name and phone from database
+        print("read data of name and phone from database");
+
+        readLocalData();
+
+      } else {
+        print("didn't go to read from local");
+      }
+
+
+
     });
+
+
+
+  }
+
+
+  Future<void> readLocalData() async {
+    // Read data from the local database
+    print("Read data from the local database");
+    List<Map<String, dynamic>> result = await localDatabase.rawQuery('''
+      SELECT * FROM users WHERE id = ?
+    ''', [currentUser.uid]);
+
+    if (result.isNotEmpty) {
+      // Data found in the local database
+      print("Data found in the local database");
+      setState(() {
+        username = result[0]['name'].toString();
+        mobile = result[0]['phone'].toString();
+      });
+    } else {
+      // No data found in the local database
+      print('No local data found for user ${currentUser.uid}');
+    }
   }
 
   Future<void> initLocalDatabase() async {

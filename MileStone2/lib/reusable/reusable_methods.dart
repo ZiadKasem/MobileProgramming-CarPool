@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 
 class ReusableMethods{
 
-  checkConnectivity(BuildContext context)async{
+  Future<int> checkConnectivity(BuildContext context)async{
     var connection = await Connectivity().checkConnectivity();
     if(connection != ConnectivityResult.mobile && connection != ConnectivityResult.wifi){
-      if(!context.mounted)return;
+      if(!context.mounted)return 0;
       displaySnakBar("Your Internet Is Not Working, Check Connection And Try Again", context);
+      return 0;//for no connection
     }
+    else
+      {
+        print("for connection it is found");
+        return 1;//for connection
+      }
+
+
   }
 
   displaySnakBar(String message, BuildContext context){
