@@ -1,25 +1,47 @@
-phase1:
-	Keeplogin						Done
-	modify User Profile					Done
- 	User Edit Profile 					Done
-	Email not registered before				Done
-	sync{
-	step1:write in the local database
-	step2:check internet connection
-	step3:read from local DB when no internet 
-	
-	read profile from local in case no internet
-	when update/edit go edit both local and firebase
-	}
+-------------------------------------------------------------------------
+Improvements								-
+= authentication in separate file					-
+= viewmodel file for profile						-
+-------------------------------------------------------------------------
+phase1:	(Profile Page)							-
+	Keeplogin						Done	-
+	modify User Profile					Done	-
+ 	User Edit Profile 					Done	-
+	Email not registered before				Done	-
+	sync{							Done	-
+	step1:write in the local database				-
+	step2:check internet connection					-
+	step3:read from local DB when no internet 			-
+									-
+	read profile from local in case no internet			-
+	when update/edit go edit both local and firebase		-
+	}								-
+-------------------------------------------------------------------------
+Phase2: 			
+-Driver Application
+*make authentication for rider/ SignUp / Login page		Done			
+*modify the route node to include : 				Done
+ Ridername/Price/trip status/From/To/Time
+
+Cart page 				
+       goal A cart page to review the order and make payments		
+	= details of ride {from, to, price, time,  }						
+	= choose payment method						
+	= button for confirmation -> returns you to homepage
+		
+The payment page is basically for choosing the payment method. 		
+Once the trip is booked, the amount is added to your card. 		
+This amount should only be deducted after completing the trip.	
+(Available, pending, approved,completed, etc.)													
+-------------------------------------------------------------------------
+routes constrain logic
+previous registered rides history
+upcomming registered rides/tracking & status 
+payment and order tracking page
+Driver Application
 
 
 
-
-
-
-
-
-------------------------------------------------------------
 Order History with tracking/status page
 Use Firebase
 ------------------------------------------------------------
@@ -27,21 +49,8 @@ Payment and order tracking page
 	
 	On the tracking page, you should display the status of the trip (pending, approved,completed, etc.)
 ------------------------------------------------------------
-Cart page <review order / make payment>
-	* A cart page to review the order and make payments
-	= details of ride 
-	= choose payment method
-	= button for confirmation -> returns you to homepage
-The payment page is basically for choosing the payment method. Once the trip is 
-booked, the amount is added to your card. This amount should only be deducted 
-after completing the trip.
------------------------------------------------------------
-Profile page
-	= Details
-	= search for offline support of firebase
 
-Use Room database or SQlite for profile data
--------------------------------------------------------------
+------------------------------------------------------------------------------------
 Ride:<Source & distination>
 
 status of the ride (completed / inservice / requested / etc...)
@@ -59,10 +68,7 @@ calculated based on the distance between the source and destination, a map API
 might be needed.
 You might also add functionality for the driver to set the cost himself.
 
--------------------------------------------------------
-Need to implement local Storage:
 
-Local may be for Previous ordered Rides
 ---------------------------------------------------------
 
 Time constrains:
@@ -75,11 +81,13 @@ reserve their seat before 10:00 pm previous day. Customers who need a ride from 
 pm must reserve their seat before 1:00 pm same da
 
 
-----------------------QUESTIONS-----------------------------------
-Test Account:
-
-	Profile ?
-	Features ?
+----------------------QUESTIONS----------------------------------
+Test Account:							-
+								-
+	Profile ?						-
+	Features ?						-
+Idea: create manual entity for it in the realtime database	-
+-----------------------------------------------------------------
 
 
 

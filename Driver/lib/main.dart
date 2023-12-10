@@ -1,8 +1,8 @@
+import 'package:driver_app/Welcome_pages/signup_screen.dart';
 import 'package:driver_app/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-
+import 'Welcome_pages/login_screen.dart';
 import 'firebase_options.dart';
 
 void main()async {
@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
 
       ),
-      home: MyScreen(),
+      home: SignUpScreen(),
       routes: {
-        //'/Login_screen': (context) => LoginScreen(),
+        '/Login_screen': (context) => LoginScreen(),
         //'/Profile_screen': (context) => ProfileScreen(),
         //'/OrderHistory_screen': (context) => OrderHistoryScreen(),
         //'/UpcommingRides_screen':(context) => UpcommingRides(),

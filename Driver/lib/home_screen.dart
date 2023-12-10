@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 void main() {
   runApp(MyScreen());
 }
@@ -12,10 +13,12 @@ class MyScreen extends StatefulWidget {
 class _MyScreenState extends State<MyScreen> {
   late DatabaseReference _databaseReference;
   List<Map<String, String>> mapRoutes = [];
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
 
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
 
   void initState() {
     super.initState();
@@ -49,22 +52,37 @@ class _MyScreenState extends State<MyScreen> {
   }
 
 
-  void _addRoute() {
+  void _addRoute()async {
     String from = fromController.text.trim();
     String to = toController.text.trim();
     String time = timeController.text.trim();
+    String price = priceController.text.trim();
+    String? currentDriverid = FirebaseAuth.instance.currentUser?.uid.toString();
+    String driverName ='';
 
-    if (from.isNotEmpty && to.isNotEmpty && time.isNotEmpty) {
+    final snapshot = await ref.child('Drivers/$currentDriverid/name').get();
+    if (snapshot.exists) {
+      driverName = snapshot.value.toString() ;
+    } else {
+      print('No data available.');
+    }
+
+
+    if (from.isNotEmpty && to.isNotEmpty && time.isNotEmpty && price.isNotEmpty) {
       _databaseReference.push().set({
-        'From': '$from',
-        'To': '$to',
-        'Time': time,
+        'From' : from,
+        'To'   : to,
+        'Time' : time,
+        'price': price,
+        'driverName': driverName,
+        'trip Status':"Availabe",
       });
 
       // Clear the text controllers after adding a route
       fromController.clear();
       toController.clear();
       timeController.clear();
+      priceController.clear();
     } else {
       print("One or more fields are empty");
     }
@@ -92,6 +110,10 @@ class _MyScreenState extends State<MyScreen> {
             TextField(
               controller: timeController,
               decoration: InputDecoration(labelText: 'Time'),
+            ),
+            TextField(
+              controller: priceController,
+              decoration: InputDecoration(labelText: 'Price'),
             ),
             ElevatedButton(
               onPressed: () {
