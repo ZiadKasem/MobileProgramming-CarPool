@@ -19,6 +19,7 @@ class _MyScreenState extends State<MyScreen> {
   TextEditingController timeController = TextEditingController();
 
   void initState() {
+
     super.initState();
     _databaseReference = FirebaseDatabase.instance.reference().child("routes");
     _setupDataListener();
@@ -38,7 +39,9 @@ class _MyScreenState extends State<MyScreen> {
                 .map((entry) => Map<String, String>.from({
               'From': '${entry.value['From']}',
               'To': '${entry.value['To']}',
-              'Time': entry.value['Time'],
+              'Time': '${entry.value['Time']}',
+              'RoutID':'${entry.value['RoutID']}',
+              "price":  '${entry.value['price']}',
             }))
                 .toList();
           });
@@ -83,6 +86,8 @@ class _MyScreenState extends State<MyScreen> {
                             Text("${mapRoutes[index]['From']}",style: TextStyle(fontSize: 12),),
                             Text("${mapRoutes[index]['Time']}"),
                             Text("${mapRoutes[index]['To']}"),
+                            Text("${mapRoutes[index]['RoutID']}"),
+
                           ],
                         ),
                         leading: Image.asset(
@@ -90,7 +95,10 @@ class _MyScreenState extends State<MyScreen> {
                           height: 25,
                         ),
                         onTap: () {
-                          Navigator.pushNamed(context, "/Cart_screen");
+                          Navigator.pushNamed(context,
+                              "/Cart_screen",
+                              arguments: {"RoutID": "${mapRoutes[index]['RoutID']}"}
+                          );
                         },
                       ),
                     ),

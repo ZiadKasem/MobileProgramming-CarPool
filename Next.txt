@@ -2,6 +2,7 @@
 Improvements								-
 = authentication in separate file					-
 = viewmodel file for profile						-
+= refresh when drag page down						-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -25,7 +26,7 @@ Phase2:
 
 Cart page 				
        goal A cart page to review the order and make payments		
-	= details of ride {from, to, price, time,  }						
+	= details of ride {from, to, price, time,}						
 	= choose payment method						
 	= button for confirmation -> returns you to homepage
 		

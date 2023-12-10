@@ -69,13 +69,16 @@ class _MyScreenState extends State<MyScreen> {
 
 
     if (from.isNotEmpty && to.isNotEmpty && time.isNotEmpty && price.isNotEmpty) {
-      _databaseReference.push().set({
+      DatabaseReference newRouteRef = _databaseReference.push();
+      String? routeID = newRouteRef.key;
+      newRouteRef.set({
         'From' : from,
         'To'   : to,
         'Time' : time,
         'price': price,
-        'driverName': driverName,
-        'trip Status':"Availabe",
+        'DriverName': driverName,
+        'Trip Status':"Availabe",
+        'RoutID':routeID,
       });
 
       // Clear the text controllers after adding a route
