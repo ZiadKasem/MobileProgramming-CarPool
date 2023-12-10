@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -12,17 +13,16 @@ class _CartScreenState extends State<CartScreen> {
   String _selectedPaymentMethod = 'Cash';
   bool _isCashSelected = true;
   late DatabaseReference routeref;
+  var uid;
 
 
 
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
-
+    uid = FirebaseAuth.instance.currentUser?.uid.toString();
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
     var snapshot = await routeref.get();
     return snapshot;
 
-
-    //setState(() {});
   }
 
 
@@ -55,7 +55,7 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   
+
 
                     SizedBox(height: 20,),
 
@@ -213,6 +213,26 @@ class _CartScreenState extends State<CartScreen> {
 
                     ElevatedButton(
                       onPressed: () {
+                        // i want to get number of passengers and increment them
+                        // then store it back
+                        // i want to assign the user to the ride by name passenger #
+                        // and value user ID
+
+                        //'${data?["price"] ?? "N/A"}',
+
+
+                        var counter =data?["numberOfPassengers"] ;
+                        counter  = int.parse(counter);
+                        counter=counter+1;
+
+                        routeref
+                            .child("Passengers")
+                            .set({"Passenger ${counter}":uid});
+
+                        routeref
+                            .child("numberOfPassengers")
+                            .set(counter.toString());
+                        
                         Navigator.pop(context);
                       },
                       child: Text('Proceed to Payment'),

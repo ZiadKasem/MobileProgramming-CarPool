@@ -79,6 +79,7 @@ class _MyScreenState extends State<MyScreen> {
         'DriverName': driverName,
         'Trip Status':"Availabe",
         'RoutID':routeID,
+        'numberOfPassengers':'0',
       });
 
       // Clear the text controllers after adding a route

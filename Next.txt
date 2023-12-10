@@ -3,6 +3,7 @@ Improvements								-
 = authentication in separate file					-
 = viewmodel file for profile						-
 = refresh when drag page down						-
+= add driver mobile to node route					-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -18,22 +19,19 @@ phase1:	(Profile Page)							-
 	when update/edit go edit both local and firebase		-
 	}								-
 -------------------------------------------------------------------------
-Phase2: 			
--Driver Application
-*make authentication for rider/ SignUp / Login page		Done			
-*modify the route node to include : 				Done
- Ridername/Price/trip status/From/To/Time
-
-Cart page 				
-       goal A cart page to review the order and make payments		
-	= details of ride {from, to, price, time,}						
-	= choose payment method						
-	= button for confirmation -> returns you to homepage
-		
-The payment page is basically for choosing the payment method. 		
-Once the trip is booked, the amount is added to your card. 		
-This amount should only be deducted after completing the trip.	
-(Available, pending, approved,completed, etc.)													
+Phase2: 								-
+-Driver Application							-
+*make authentication for rider/ SignUp / Login page		Done	-		
+*modify the route node to include : 				Done	-
+ Ridername/Price/trip status/From/To/Time				-
+									-
+Cart page 								-
+       goal A cart page to review the order and make payments		-
+	= details of ride {from, to, price, time,}		Done	-				
+	= choose payment method					ASK	-				
+	= button for confirmation -> returns you to homepage	Done	-
+			and add node has passengersIDs		Done	-
+			and increment counter of passengers	Done	-
 -------------------------------------------------------------------------
 routes constrain logic
 previous registered rides history
@@ -42,6 +40,13 @@ payment and order tracking page
 Driver Application
 
 
+Driver can see whos passengers requested
+---------------------------------------
+
+The payment page is basically for choosing the payment method. 		
+Once the trip is booked, the amount is added to your card. 		
+This amount should only be deducted after completing the trip.	
+(Available, pending, approved,completed, etc.)		
 
 Order History with tracking/status page
 Use Firebase
@@ -49,6 +54,7 @@ Use Firebase
 Payment and order tracking page
 	
 	On the tracking page, you should display the status of the trip (pending, approved,completed, etc.)
+
 ------------------------------------------------------------
 
 ------------------------------------------------------------------------------------
