@@ -227,7 +227,7 @@ class _CartScreenState extends State<CartScreen> {
 
                         routeref
                             .child("Passengers")
-                            .set({"Passenger ${counter}":uid});
+                            .update({"Passenger ${counter}":uid});
 
                         routeref
                             .child("numberOfPassengers")

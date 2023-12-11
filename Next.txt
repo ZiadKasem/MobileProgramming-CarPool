@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------
-Improvements								-
+Future Improvements							-
 = authentication in separate file					-
-= viewmodel file for profile						-
+= Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
 -------------------------------------------------------------------------
@@ -33,13 +33,18 @@ Cart page 								-
 			and add node has passengersIDs		Done	-
 			and increment counter of passengers	Done	-
 -------------------------------------------------------------------------
+phase3:									-
+Fix bug only one passegner ID is added to route			Done	-
+-------------------------------------------------------------------------
+
+
 routes constrain logic
 previous registered rides history
 upcomming registered rides/tracking & status 
 payment and order tracking page
 Driver Application
 
-
+if passenger already booked this ride he can't book it again
 Driver can see whos passengers requested
 ---------------------------------------
 
@@ -53,8 +58,8 @@ Use Firebase
 ------------------------------------------------------------
 Payment and order tracking page
 	
-	On the tracking page, you should display the status of the trip (pending, approved,completed, etc.)
-
+On the tracking page, you should display the status of the trip (pending, approved,completed, etc.)
+when ride complete 4 passenger change status to Fully Booked
 ------------------------------------------------------------
 
 ------------------------------------------------------------------------------------
