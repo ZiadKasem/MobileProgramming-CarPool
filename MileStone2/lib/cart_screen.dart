@@ -235,6 +235,7 @@ class _CartScreenState extends State<CartScreen> {
                           counter=counter+1;
                           // If the user is not assigned, proceed to add the user as a new passenger
                           routeref.child("Passengers").update({"Passenger ${counter}": uid});
+
                           routeref.child("numberOfPassengers").set(counter.toString());
 
 

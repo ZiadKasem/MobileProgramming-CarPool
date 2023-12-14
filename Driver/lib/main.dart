@@ -2,6 +2,7 @@ import 'package:driver_app/Authentication/auth.dart';
 import 'package:driver_app/Welcome_pages/signup_screen.dart';
 import 'package:driver_app/add_ride.dart';
 import 'package:driver_app/home_screen.dart';
+import 'package:driver_app/rideTracking.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Welcome_pages/login_screen.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         //'/OrderHistory_screen': (context) => OrderHistoryScreen(),
         //'/UpcommingRides_screen':(context) => UpcommingRides(),
         //'/OrderTracking_screen':(context) => OrderTracking(),
-        //'/Cart_screen':(context) => CartScreen(),
+        '/rideTracking':(context) => RideTracking(),
         '/add_ride':(context) => Add_Ride(),
         '/home_screen':(context) => MyScreen(),
       },

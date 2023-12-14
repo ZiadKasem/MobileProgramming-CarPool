@@ -97,7 +97,7 @@ class _MyScreenState extends State<MyScreen> {
                     height: 25,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, "/Cart_screen");
+                    Navigator.pushNamed(context, "/rideTracking",arguments: {"RoutID": "${mapRoutes[index]['RoutID']}"});
                   },
                 ),
               ),
