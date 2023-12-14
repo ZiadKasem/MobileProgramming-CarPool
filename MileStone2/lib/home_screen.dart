@@ -42,6 +42,7 @@ class _MyScreenState extends State<MyScreen> {
               'Time': '${entry.value['Time']}',
               'RoutID':'${entry.value['RoutID']}',
               "price":  '${entry.value['price']}',
+              "TripStatus":'${entry.value['TripStatus']}',
             }))
                 .toList();
           });
@@ -83,10 +84,10 @@ class _MyScreenState extends State<MyScreen> {
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("${mapRoutes[index]['From']}",style: TextStyle(fontSize: 12),),
-                            Text("${mapRoutes[index]['Time']}"),
-                            Text("${mapRoutes[index]['To']}"),
-                            Text("${mapRoutes[index]['RoutID']}"),
+                            Text("From:${mapRoutes[index]['From']}",style: TextStyle(fontSize: 12),),
+                            Text("Time:${mapRoutes[index]['Time']}"),
+                            Text("To:${mapRoutes[index]['To']}"),
+                            Text("Status:${mapRoutes[index]["TripStatus"]}"),
 
                           ],
                         ),

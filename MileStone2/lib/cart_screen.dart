@@ -84,7 +84,7 @@ class _CartScreenState extends State<CartScreen> {
                     Row(
                       children: [
                         Text(
-                          "PickUp point: Gate 3",
+                          "PickUp point:",
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 20 ,
@@ -217,25 +217,41 @@ class _CartScreenState extends State<CartScreen> {
                         // then store it back
                         // i want to assign the user to the ride by name passenger #
                         // and value user ID
+                        // i want each passenger can reserve only once
 
-                        //'${data?["price"] ?? "N/A"}',
+
+                        // Check if the current user ID is already assigned to the route
+                        bool isUserAssigned = false;
+
+                        if (data?["Passengers"] != null) {
+                          Map<Object?, Object?>? passengers = data?["Passengers"];
+                          if (passengers!.containsValue(uid)) {
+                            isUserAssigned = true;
+                          }
+                        }
+                        if (!isUserAssigned) {
+                          var counter =data?["numberOfPassengers"] ;
+                          counter  = int.parse(counter);
+                          counter=counter+1;
+                          // If the user is not assigned, proceed to add the user as a new passenger
+                          routeref.child("Passengers").update({"Passenger ${counter}": uid});
+                          routeref.child("numberOfPassengers").set(counter.toString());
 
 
-                        var counter =data?["numberOfPassengers"] ;
-                        counter  = int.parse(counter);
-                        counter=counter+1;
 
-                        routeref
-                            .child("Passengers")
-                            .update({"Passenger ${counter}":uid});
-
-                        routeref
-                            .child("numberOfPassengers")
-                            .set(counter.toString());
-                        
-                        Navigator.pop(context);
+                          Navigator.pop(context);
+                        } else {
+                          // If the user is already assigned, you can show a message or take appropriate action
+                          // For example, show a snackbar with a message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('You have already reserved this route.'),
+                            ),
+                          );
+                        }
                       },
                       child: Text('Proceed to Payment'),
+
                     ),
                   ],
                 ),
