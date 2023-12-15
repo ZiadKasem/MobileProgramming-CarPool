@@ -56,14 +56,21 @@ class _RideTrackingState extends State<RideTracking> {
 
 
               var data = (snapshot.data!.value as Map<Object?, Object?>).cast<String, dynamic>();
-
-              var passengersMap = Map<String, dynamic>.from(data?["Passengers"]);
               // Create an empty list to store the values
               List<dynamic> passengersList = [];
+              if (data["Passengers"].toString() == "null"){
+                print("No passengers yet");
+
+              }
+              else{
+              var passengersMap = Map<String, dynamic>.from(data["Passengers"]);
+
 
               // Add all values from the map to the list
               passengersList.addAll(passengersMap.values);
               print(passengersList);
+              }
+
 
 
 
@@ -259,7 +266,7 @@ class _RideTrackingState extends State<RideTracking> {
                       ],
                     ),
 
-
+                   passengersList.isEmpty ? Text("NO passengers request the ride yet"):
                    Expanded(
                       child:SizedBox.expand(
                         child: ListView.builder(
