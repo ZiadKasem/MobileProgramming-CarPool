@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReusableMethods{
 
@@ -22,6 +23,13 @@ class ReusableMethods{
   displaySnakBar(String message, BuildContext context){
     var snackBar = SnackBar(content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+
+  String getFormattedDateTimeWithoutSeconds() {
+    DateTime now = DateTime.now();
+    String formattedDateTime = DateFormat('MM-dd HH:mm').format(now);
+    return formattedDateTime;
   }
 
 }

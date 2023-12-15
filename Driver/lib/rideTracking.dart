@@ -362,7 +362,25 @@ class _RideTrackingState extends State<RideTracking> {
                                 child: Text("Accept",style: TextStyle(fontSize: 10.0),),
                               ),
                               trailing: ElevatedButton(
-                                onPressed: (){},
+                                onPressed: (){
+                                  routeref
+                                      .child("rejectedPassengers")
+                                      .child("${passengersList[index].toString()}")
+                                      .update({
+                                    "name":"${passengersList[index].toString().split(",")[0]}",
+                                    "phone":"${passengersList[index].toString().split(",")[1]}",
+                                  });
+
+                                  routeref.child("Passengers").child("${passengersList[index].toString()}").remove();
+                                  passengersList.remove(passengersList[index]);
+                                  print("after remove ${passengersList}");
+                                  setState(() {
+
+                                  });
+
+
+
+                                },
                                 child: Text("Reject",style: TextStyle(fontSize: 10.0),),
 
                               ),

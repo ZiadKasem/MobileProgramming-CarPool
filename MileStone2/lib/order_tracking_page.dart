@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key});
+class OrderTrackingPage extends StatefulWidget {
+  const OrderTrackingPage({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<OrderTrackingPage> createState() => _OrderTrackingPageState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _OrderTrackingPageState extends State<OrderTrackingPage> {
+
   String _selectedPaymentMethod = 'Cash';
   bool _isCashSelected = true;
   late DatabaseReference usereref;
@@ -17,7 +18,6 @@ class _CartScreenState extends State<CartScreen> {
   var uid;
   var currentUserEmail;
   late var userdata;
-
 
 
   Future<DataSnapshot> _fetchData(String fun_routeInstanceID) async {
@@ -29,18 +29,21 @@ class _CartScreenState extends State<CartScreen> {
     usereref = FirebaseDatabase.instance.ref("users/${uid}");
     userdata = await usereref.get();
     var snapshot = await routeref.get();
+
+
+
     return snapshot;
 
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     Map routeInstanceID = ModalRoute.of(context)!.settings.arguments as Map;
-    //_fetchData(routeInstanceID["RoutID"]);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cart"),
+        title: Text("OrderTrackingPage"),
       ),
       body: FutureBuilder(
           future: _fetchData(routeInstanceID["RoutID"]),
@@ -58,6 +61,34 @@ class _CartScreenState extends State<CartScreen> {
               // you can access the data like: snapshot.data.value
               //var data = snapshot.data!.value as Map<String, dynamic>;
               var data = (snapshot.data!.value as Map<Object?, Object?>).cast<String, dynamic>();
+
+              List<dynamic> acceptedPassengersList = [];
+              if (data["acceptedPassengers"].toString() == "null"){
+                print("No accepted passengers yet");
+
+              }
+              else{
+                var acceptedPassengersListMap = Map<String, dynamic>.from(data["acceptedPassengers"]);
+                // Add all values from the map to the list
+                acceptedPassengersList.addAll(acceptedPassengersListMap.values);
+                //print(acceptedPassengersList);
+              }
+
+
+              List<dynamic> rejectedPassengersList = [];
+              if (data["rejectedPassengers"].toString() == "null"){
+                print("No accepted passengers yet");
+
+              }
+              else{
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["rejectedPassengers"]);
+                // Add all values from the map to the list
+                rejectedPassengersList.addAll(rejectedPassengersListMap.values);
+                //print(acceptedPassengersList);
+              }
+
+
+
               return Container(
                 margin: EdgeInsets.all(10),
                 child: Column(
@@ -73,14 +104,14 @@ class _CartScreenState extends State<CartScreen> {
                           "Rider name:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["DriverName"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -95,14 +126,14 @@ class _CartScreenState extends State<CartScreen> {
                           "PickUp point:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["From"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15,
                           ),
                         ),
 
@@ -117,14 +148,14 @@ class _CartScreenState extends State<CartScreen> {
                           "Destination point:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["To"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -139,14 +170,14 @@ class _CartScreenState extends State<CartScreen> {
                           "Time:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["Time"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -161,14 +192,14 @@ class _CartScreenState extends State<CartScreen> {
                           "Price::",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15,
                           ),
                         ),
                         Text(
                           '${data?["price"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -177,105 +208,70 @@ class _CartScreenState extends State<CartScreen> {
 
                     SizedBox(height: 20,),
 
-                    Text(
-                      "Choose payment Method",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20,
+                    acceptedPassengersList.isEmpty ? Text("NO accepted passengers yet"):
+                    Expanded(
+                      child:SizedBox.expand(
+                        child: ListView.builder(
+                          itemCount: acceptedPassengersList.length,
+                          itemBuilder: (context,index){
+                            return Container(
+
+                              decoration:BoxDecoration(
+                                borderRadius: BorderRadius.circular(45),
+                                color: Colors.green,
+                              ),
+                              margin: EdgeInsets.fromLTRB(1, 1, 1, 10),
+
+                              child: ListTile(
+                                title: Column(
+                                  children: [
+                                    Text(acceptedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                  ],
+                                ),
+                                subtitle: Text(acceptedPassengersList[index].toString().split(",")[0].split("{")[1]),
+
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
 
-                    SizedBox(height: 10,),
+                    rejectedPassengersList.isEmpty ? Text("NO rejected passengers yet"):
+                    Expanded(
+                      child:SizedBox.expand(
+                        child: ListView.builder(
+                          itemCount: rejectedPassengersList.length,
+                          itemBuilder: (context,index){
+                            return Container(
 
-                    // RadioListTile option
-                    RadioListTile<bool>(
-                      title: Text('Cash'),
-                      value: true,
-                      groupValue: _isCashSelected,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _isCashSelected = value ?? false;
-                          _selectedPaymentMethod = _isCashSelected ? 'Cash' : 'Other';
-                        });
-                      },
-                    ),
+                              decoration:BoxDecoration(
+                                borderRadius: BorderRadius.circular(45),
+                                color: Colors.red,
+                              ),
+                              margin: EdgeInsets.fromLTRB(1, 1, 1, 10),
 
-                    RadioListTile<bool>(
-                      title: Text('Visa'),
-                      value: false,
-                      groupValue: _isCashSelected,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _isCashSelected = value ?? true;
-                          _selectedPaymentMethod = _isCashSelected ? 'Cash' : 'Visa';
-                        });
-                      },
-                    ),
+                              child: ListTile(
+                                title: Column(
+                                  children: [
+                                    Text(rejectedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                  ],
+                                ),
+                                subtitle: Text(rejectedPassengersList[index].toString().split(",")[0].split("{")[1]),
 
-                    // DropdownButton option
-                    SizedBox(height: 10,),
-
-
-
-                    SizedBox(height: 20,),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        // i want to get number of passengers and increment them
-                        // then store it back
-                        // i want to assign the user to the ride by name passenger #
-                        // and value user ID
-                        // i want each passenger can reserve only once
-
-
-                        // Check if the current user ID is already assigned to the route
-                        bool isUserAssigned = false;
-
-                        if (data?["TotalPassengersAssigned"] != null) {
-
-                          Map<Object?, Object?>? passengers = data?["TotalPassengersAssigned"];
-                          if (passengers!.containsValue(uid)) {
-                            isUserAssigned = true;
-                          }
-                        }
-
-                        if (!isUserAssigned) {
-
-                          if(data?["TripStatus"] == "FullyBooked"){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('this trip is FullyBooked'),
                               ),
                             );
-                          }else{
-                              var counter =data?["numberOfPassengers"] ;
-                              counter  = int.parse(counter);
-                              counter=counter+1;
-                              // If the user is not assigned, proceed to add the user as a new passenger
-                              routeref.child("TotalPassengersAssigned").update({uid:uid});
-                              routeref.child("Passengers").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});//store user name and phone
-                              /*usereref.child("assignedToTrip")
-                                  .child(routeInstanceID["RoutID"]).set(routeInstanceID["RoutID"]);*/
-                              Navigator.pop(context);
-                          }
-                        } else {
-                          // If the user is already assigned, you can show a message or take appropriate action
-                          // For example, show a snackbar with a message
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('You have already reserved this route.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: Text('Proceed to Payment'),
-
+                          },
+                        ),
+                      ),
                     ),
+
+
                   ],
                 ),
               );
 
-          }
+            }
 
           }
       ),

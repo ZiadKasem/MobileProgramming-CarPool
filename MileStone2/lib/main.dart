@@ -5,6 +5,7 @@ import 'package:project/home_screen.dart';
 import 'package:project/login_screen.dart';
 import 'package:project/order_history.dart';
 import 'package:project/order_tracking.dart';
+import 'package:project/order_tracking_page.dart';
 import 'package:project/profile.dart';
 import 'package:project/upcoming_rides.dart';
 
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/OrderTracking_screen':(context) => OrderTracking(),
         '/Cart_screen':(context) => CartScreen(),
         '/home_screen':(context) => MyScreen(),
+        '/order_tracking_page':(context) => OrderTrackingPage(),
       },
     );
   }

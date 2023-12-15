@@ -42,42 +42,39 @@ show status of the trip in home screen				Done	-
 Driver:									-
 Handling adding ride to meet the provided trip times		Done	-
 -------------------------------------------------------------------------
-Phase4:
-HomeScreen shows The Driver rides only
--Add driver ID to the route					Done
--filter based on driverID					Done
--create page so driver can access the created route to
-			- change status	buttons			Done
-			- show passengers 			Done	
-			- Accept Passengers logic		Done
-			- Change status to fully booked when 4 	Done
-				passengers accepted
-			-OrderHistory page
+Phase4:									-
+HomeScreen shows The Driver rides only					-
+-Add driver ID to the route					Done	-
+-filter based on driverID					Done	-
+-create page so driver can access the created route to			-
+			- change status	buttons			Done	-
+			- show passengers 			Done	-
+			- Accept Passengers logic		Done	-
+			- Change status to fully booked when 4 	Done	-
+				passengers accepted			-
+			-OrderHistory page			Done	-
+-------------------------------------------------------------------------
+Phase5:									-
+			-Reject Passengers logic		Done	- 
+			-Payment and order tracking page.	Done
+			-Time constrains
+			-Profile
+			-remove upcomming rides
+			-test account
+			-improvements
 
 -------------------------------------------------------------------------
 
 Time constrains:
 
-#drivers to confirm orders and update status data. Order must be 
-	confirmed before 11:30 pm for morning ride and before 4:30 pm for afternoon ride
+#Order must be confirmed before 11:30 pm for morning ride and before 4:30 pm for afternoon ride
 
 
 
-Customers who need a ride at 7:30 must 
-reserve their seat before 10:00 pm previous day. Customers who need a ride from campus at 5:30 
-pm must reserve their seat before 1:00 pm same da
+Customers who need a ride at 7:30 must reserve their seat before 10:00 pm previous day.
+
+Customers who need a ride from campus at 5:30 pm must reserve their seat before 1:00 pm same day
 -----------------------------------------------------------------------------
-
-previous registered rides history
-upcomming registered rides/tracking & status 
-payment and order tracking page
-
----------------------------------------
-
-Order History with tracking/status page
-Use Firebase
-
-------------------------------------------------------------------------------------
 
 
 

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'reusable/reusable_methods.dart';
 void main() {
   runApp(MyScreen());
 }
@@ -13,6 +14,7 @@ class MyScreen extends StatefulWidget {
 class _MyScreenState extends State<MyScreen> {
   late DatabaseReference _databaseReference;
   List<Map<String, String>> mapRoutes = [];
+  ReusableMethods rm = ReusableMethods();
 
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
@@ -23,6 +25,7 @@ class _MyScreenState extends State<MyScreen> {
     super.initState();
     _databaseReference = FirebaseDatabase.instance.reference().child("routes");
     _setupDataListener();
+    print(rm.getFormattedDateTimeWithoutSeconds());
   }
 
   void _setupDataListener() {
@@ -46,15 +49,67 @@ class _MyScreenState extends State<MyScreen> {
             }))
                 .toList();
           });
-        }
+          
+          /*if(rm.getCurrentTime().compareTo("21:59")>0){
+            print("time after 10PM");
+
+            setState(() {
+              mapRoutes = data
+                  .where((entry) => '${entry.value['Time']}' =="17:30")
+                  .map((entry) => Map<String, String>.from({
+                'From': '${entry.value['From']}',
+                'To': '${entry.value['To']}',
+                'Time': '${entry.value['Time']}',
+                'RoutID':'${entry.value['RoutID']}',
+                "price":  '${entry.value['price']}',
+                "TripStatus":'${entry.value['TripStatus']}',
+              }))
+                  .toList();
+            });
+
+          }
+          else if(rm.getFormattedDateTimeWithoutSeconds().compareTo("21:59")<0){
+            print("time before 10PM");
+            setState(() {
+              mapRoutes = data
+                  .map((entry) => Map<String, String>.from({
+                'From': '${entry.value['From']}',
+                'To': '${entry.value['To']}',
+                'Time': '${entry.value['Time']}',
+                'RoutID':'${entry.value['RoutID']}',
+                "price":  '${entry.value['price']}',
+                "TripStatus":'${entry.value['TripStatus']}',
+              }))
+                  .toList();
+            });
+          }
+
+          else if(rm.getFormattedDateTimeWithoutSeconds().compareTo("21:59")<0){
+            print("time before 10PM");
+            setState(() {
+              mapRoutes = data
+                  .map((entry) => Map<String, String>.from({
+                'From': '${entry.value['From']}',
+                'To': '${entry.value['To']}',
+                'Time': '${entry.value['Time']}',
+                'RoutID':'${entry.value['RoutID']}',
+                "price":  '${entry.value['price']}',
+                "TripStatus":'${entry.value['TripStatus']}',
+              }))
+                  .toList();
+            });
+          }*/
+
+          
+
+       
+       
+        }//end of the if condition
       } else {
         print("Snapshot value is null");
       }
     });
   }
-
-
-
 
 
   Widget build(BuildContext context) {
@@ -79,6 +134,7 @@ class _MyScreenState extends State<MyScreen> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
+
                       color: Colors.blueAccent,
                       child: ListTile(
                         title: Column(

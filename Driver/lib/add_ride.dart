@@ -18,7 +18,7 @@ class _Add_RideState extends State<Add_Ride> {
   TextEditingController priceController = TextEditingController();
 
 
-  String selectedTime = "7:30am";
+  String selectedTime = "7:30";
   String selectedPickupPoint = "Gate 3";
   String selectedDestination = "Gate 3";
 
@@ -92,7 +92,7 @@ class _Add_RideState extends State<Add_Ride> {
                 });
               }
             },
-            items: ['7:30am', '5:30pm'].map<DropdownMenuItem<String>>((String value) {
+            items: ['7:30', '17:30'].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
@@ -101,9 +101,9 @@ class _Add_RideState extends State<Add_Ride> {
           ),
 
           SizedBox(height: 20),
-          Text(selectedTime == '7:30am' ? 'Select Destination:' : 'Enter Destination:'),
+          Text(selectedTime == '7:30' ? 'Select Destination:' : 'Enter Destination:'),
 
-          selectedTime == '7:30am' ?
+          selectedTime == '7:30' ?
 
           DropdownButton<String>(
             value: selectedDestination,
@@ -135,9 +135,9 @@ class _Add_RideState extends State<Add_Ride> {
           ),
 
           SizedBox(height: 20),
-          Text(selectedTime == '7:30am' ? 'Enter Pickup Point:' : 'Select Pickup Point:'),
+          Text(selectedTime == '7:30' ? 'Enter Pickup Point:' : 'Select Pickup Point:'),
 
-          selectedTime == '7:30am'
+          selectedTime == '7:30'
               ? TextField(
             onChanged: (value) {
               setState(() {
