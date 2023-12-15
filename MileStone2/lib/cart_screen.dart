@@ -15,11 +15,14 @@ class _CartScreenState extends State<CartScreen> {
   late DatabaseReference usereref;
   late DatabaseReference routeref;
   var uid;
+  var currentUserEmail;
   late var userdata;
 
 
 
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
+    currentUserEmail = FirebaseAuth.instance.currentUser?.email.toString();
+    print("email ${currentUserEmail}");
     uid = FirebaseAuth.instance.currentUser?.uid.toString();
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
     usereref = FirebaseDatabase.instance.ref("users/${uid}");
@@ -230,19 +233,20 @@ class _CartScreenState extends State<CartScreen> {
                         bool isUserAssigned = false;
 
                         if (data?["Passengers"] != null) {
+
                           Map<Object?, Object?>? passengers = data?["Passengers"];
-                          if (passengers!.containsValue("Name:${userdata.child("name").value},Mobile:${userdata.child("phone").value}")) {
+                          if (passengers!.containsValue("${userdata.child("name").value},${userdata.child("phone").value}")) {
                             isUserAssigned = true;
                           }
                         }
                         if (!isUserAssigned) {
+                          print("debug2");
                           var counter =data?["numberOfPassengers"] ;
                           counter  = int.parse(counter);
                           counter=counter+1;
                           // If the user is not assigned, proceed to add the user as a new passenger
-                          routeref.child("Passengers").update({"Passenger ${counter}": "Name:${userdata.child("name").value},Mobile:${userdata.child("phone").value}"});//store user name and phone
+                          routeref.child("Passengers").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});//store user name and phone
 
-                          routeref.child("numberOfPassengers").set(counter.toString());
 
 
 

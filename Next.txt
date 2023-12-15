@@ -42,17 +42,14 @@ Handling adding ride to meet the provided trip times		Done	-
 -------------------------------------------------------------------------
 Phase4:
 HomeScreen shows The Driver rides only
--Add driver ID to the route	Done
--filter based on driverID	Done
+-Add driver ID to the route					Done
+-filter based on driverID					Done
 -create page so driver can access the created route to
-				- change status
-				- Accept Passengers
-
-Trip size maximum 4 then the status became fully booked{handled when handling driver accepting}
-Driver changing the ride status of the ride (completed / inservice / requested / etc...)
-
-
-
+			- change status	buttons			Done
+			- show passengers 			Done	
+			- Accept Passengers logic
+			- Change status to fully booked when 4 
+				passengers accepted
 -------------------------------------------------------------------------
 
 Time constrains:

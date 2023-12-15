@@ -45,30 +45,33 @@ class _RideTrackingState extends State<RideTracking> {
               return Text('Error: ${snapshot.error}');
             } else {
 
-              /*
-              * hna ana bgeb al Data 3ady
-              * b3d kda b3ml list of userIDs aly 3mlo request ll ride
-              * wbgeb map mn kl al users aly 3and
-              *
-              * */
-
-
-
-
               var data = (snapshot.data!.value as Map<Object?, Object?>).cast<String, dynamic>();
               // Create an empty list to store the values
               List<dynamic> passengersList = [];
+              List<dynamic> acceptedPassengersList = [];
+
+
+
               if (data["Passengers"].toString() == "null"){
                 print("No passengers yet");
 
               }
               else{
               var passengersMap = Map<String, dynamic>.from(data["Passengers"]);
-
-
               // Add all values from the map to the list
               passengersList.addAll(passengersMap.values);
-              print(passengersList);
+              print("before ${passengersList}");
+              }
+
+              if (data["acceptedPassengers"].toString() == "null"){
+                print("No accepted passengers yet");
+
+              }
+              else{
+                var acceptedPassengersListMap = Map<String, dynamic>.from(data["acceptedPassengers"]);
+                // Add all values from the map to the list
+                acceptedPassengersList.addAll(acceptedPassengersListMap.values);
+                //print(acceptedPassengersList);
               }
 
 
@@ -91,14 +94,14 @@ class _RideTrackingState extends State<RideTracking> {
                           "Rider name:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["DriverName"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15,
                           ),
                         ),
 
@@ -113,14 +116,14 @@ class _RideTrackingState extends State<RideTracking> {
                           "PickUp point:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["From"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -135,14 +138,14 @@ class _RideTrackingState extends State<RideTracking> {
                           "Destination point:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15,
                           ),
                         ),
                         Text(
                           '${data?["To"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -157,14 +160,14 @@ class _RideTrackingState extends State<RideTracking> {
                           "Time:",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["Time"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -179,14 +182,14 @@ class _RideTrackingState extends State<RideTracking> {
                           "Price::",
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
                         Text(
                           '${data?["price"] ?? "N/A"}',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 20 ,
+                            fontSize: 15 ,
                           ),
                         ),
 
@@ -266,7 +269,38 @@ class _RideTrackingState extends State<RideTracking> {
                       ],
                     ),
 
-                   passengersList.isEmpty ? Text("NO passengers request the ride yet"):
+                   acceptedPassengersList.isEmpty ? Text("NO accepted passengers yet"):
+                   Expanded(
+                       child:SizedBox.expand(
+                         child: ListView.builder(
+                           itemCount: acceptedPassengersList.length,
+                           itemBuilder: (context,index){
+                             return Container(
+
+                               decoration:BoxDecoration(
+                                 borderRadius: BorderRadius.circular(45),
+                                 color: Colors.green,
+                               ),
+                               margin: EdgeInsets.fromLTRB(1, 1, 1, 10),
+
+                               child: ListTile(
+                                 title: Column(
+                                   children: [
+                                     Text(acceptedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                   ],
+                                 ),
+                                 subtitle: Text(acceptedPassengersList[index].toString().split(",")[0].split("{")[1]),
+
+                               ),
+                             );
+                           },
+                         ),
+                       ),
+                     ),
+
+
+
+                  passengersList.isEmpty ? Text("NO passengers request the ride yet"):
                    Expanded(
                       child:SizedBox.expand(
                         child: ListView.builder(
@@ -286,8 +320,41 @@ class _RideTrackingState extends State<RideTracking> {
                                     ],
                                 ),
                               subtitle: Text(passengersList[index].toString().split(",")[1]),
-                              leading: ElevatedButton(
-                                onPressed: (){},
+                              leading: ElevatedButton(// accept button
+                                onPressed: (){
+
+                                  if(data?["numberOfPassengers"] != "4"){
+                                    var counter =data?["numberOfPassengers"] ;
+                                    counter  = int.parse(counter);
+                                    counter=counter+1;
+                                    routeref.child("numberOfPassengers").set(counter.toString());
+
+                                    routeref
+                                        .child("acceptedPassengers")
+                                        .child("${passengersList[index].toString()}")
+                                        .update({
+                                      "name":"${passengersList[index].toString().split(",")[0]}",
+                                      "phone":"${passengersList[index].toString().split(",")[1]}",
+                                    });
+                                    
+                                    routeref.child("Passengers").child("${passengersList[index].toString()}").remove();
+                                    passengersList.remove(passengersList[index]);
+                                    print("after remove ${passengersList}");
+
+                                    setState(() {
+
+                                    });
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('You already accepted 4 passengers'),
+                                      ),
+                                    );
+                                  }
+
+                                  //remove the accepted from the list and from the node
+
+                                },
                                 child: Text("Accept",style: TextStyle(fontSize: 10.0),),
                               ),
                               trailing: ElevatedButton(
@@ -308,33 +375,9 @@ class _RideTrackingState extends State<RideTracking> {
 
 
 
-
-
-                    /*DropdownButton<String>(
-                      value: selectedStatus,
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            selectedStatus = newValue;
-                          });
-                        }
-                      },
-                      items: ['completed','In service','Available','canceled','Fully booked'].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),*/
-
-
                     /*
-                    * thoughts
-                    * driver change status (completed / In service / Available / canceled / Fully booked )
-                    * now i need to add expanded wigdet
-                    * has recycle view that contains passengers apply for the trip
-                    * each tile will have passenger name, mobile -button for accept/reject
                     * when accepting the passenger create new node called acceptedPassengers
+                    * accepted passengers appears in the cart / track - pages
                     * */
                   ],
                 ),
