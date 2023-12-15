@@ -232,9 +232,9 @@ class _CartScreenState extends State<CartScreen> {
                         // Check if the current user ID is already assigned to the route
                         bool isUserAssigned = false;
 
-                        if (data?["Passengers"] != null) {
+                        if (data?["TotalPassengersAssigned"] != null) {
 
-                          Map<Object?, Object?>? passengers = data?["Passengers"];
+                          Map<Object?, Object?>? passengers = data?["TotalPassengersAssigned"];
                           if (passengers!.containsValue("${userdata.child("name").value},${userdata.child("phone").value}")) {
                             isUserAssigned = true;
                           }
@@ -245,6 +245,7 @@ class _CartScreenState extends State<CartScreen> {
                           counter  = int.parse(counter);
                           counter=counter+1;
                           // If the user is not assigned, proceed to add the user as a new passenger
+                          routeref.child("TotalPassengersAssigned").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});
                           routeref.child("Passengers").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});//store user name and phone
 
 
