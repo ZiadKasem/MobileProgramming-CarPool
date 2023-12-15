@@ -341,10 +341,14 @@ class _RideTrackingState extends State<RideTracking> {
                                     passengersList.remove(passengersList[index]);
                                     print("after remove ${passengersList}");
 
+                                    if(counter == 4){
+                                      routeref.child("TripStatus").set("FullyBooked");
+                                    }
                                     setState(() {
 
                                     });
                                   }else{
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text('You already accepted 4 passengers'),

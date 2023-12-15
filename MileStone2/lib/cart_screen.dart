@@ -239,19 +239,24 @@ class _CartScreenState extends State<CartScreen> {
                             isUserAssigned = true;
                           }
                         }
+
                         if (!isUserAssigned) {
-                          print("debug2");
-                          var counter =data?["numberOfPassengers"] ;
-                          counter  = int.parse(counter);
-                          counter=counter+1;
-                          // If the user is not assigned, proceed to add the user as a new passenger
-                          routeref.child("TotalPassengersAssigned").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});
-                          routeref.child("Passengers").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});//store user name and phone
 
-
-
-
-                          Navigator.pop(context);
+                          if(data?["TripStatus"] == "FullyBooked"){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('this trip is FullyBooked'),
+                              ),
+                            );
+                          }else{
+                              var counter =data?["numberOfPassengers"] ;
+                              counter  = int.parse(counter);
+                              counter=counter+1;
+                              // If the user is not assigned, proceed to add the user as a new passenger
+                              routeref.child("TotalPassengersAssigned").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});
+                              routeref.child("Passengers").update({"${userdata.child("name").value},${userdata.child("phone").value}":"${userdata.child("name").value},${userdata.child("phone").value}"});//store user name and phone
+                              Navigator.pop(context);
+                          }
                         } else {
                           // If the user is already assigned, you can show a message or take appropriate action
                           // For example, show a snackbar with a message

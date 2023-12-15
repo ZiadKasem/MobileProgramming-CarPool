@@ -4,6 +4,8 @@ Future Improvements							-
 = Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
+= at first accept from the driver the accepted passenger dosent appear	-
+	directly go out and reenter					-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -47,9 +49,11 @@ HomeScreen shows The Driver rides only
 -create page so driver can access the created route to
 			- change status	buttons			Done
 			- show passengers 			Done	
-			- Accept Passengers logic
-			- Change status to fully booked when 4 
+			- Accept Passengers logic		Done
+			- Change status to fully booked when 4 	Done
 				passengers accepted
+			-OrderHistory page
+
 -------------------------------------------------------------------------
 
 Time constrains:
@@ -69,11 +73,6 @@ upcomming registered rides/tracking & status
 payment and order tracking page
 
 ---------------------------------------
-
-The payment page is basically for choosing the payment method. 		
-Once the trip is booked, the amount is added to your card. 		
-This amount should only be deducted after completing the trip.	
-
 
 Order History with tracking/status page
 Use Firebase
