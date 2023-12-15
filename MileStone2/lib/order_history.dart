@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +50,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               'Time': '${entry.value['Time']}',
               'RoutID': '${entry.value['RoutID']}',
               "price": '${entry.value['price']}',
+              "Date":'${entry.value['Date']}',
               "TripStatus": '${entry.value['TripStatus']}',
             }))
                 .toList();
@@ -93,7 +93,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                           children: [
                             Text("From:${mapRoutes[index]['From']}",
                               style: TextStyle(fontSize: 12),),
-                            Text("Time:${mapRoutes[index]['Time']}"),
+                            Text("Time:${mapRoutes[index]['Time']} ${mapRoutes[index]['Date']}"),
                             Text("To:${mapRoutes[index]['To']}"),
                             Text("Status:${mapRoutes[index]["TripStatus"]}"),
 

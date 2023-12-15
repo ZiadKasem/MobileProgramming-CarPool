@@ -21,6 +21,8 @@ class _Add_RideState extends State<Add_Ride> {
   String selectedTime = "7:30";
   String selectedPickupPoint = "Gate 3";
   String selectedDestination = "Gate 3";
+  DateTime selectedDate = DateTime.now().add(Duration(days: 1));
+
 
 
   void _addRoute()async {
@@ -46,6 +48,7 @@ class _Add_RideState extends State<Add_Ride> {
         'DriverID':currentDriverid,
         'From' : selectedPickupPoint,
         'To'   : selectedDestination,
+        'Date': selectedDate.toString().split(" ")[0],
         'Time' : selectedTime,
         'price': price,
         'DriverName': driverName,
@@ -72,117 +75,141 @@ class _Add_RideState extends State<Add_Ride> {
   }
 
 
+  Future<void> _selectDate() async {
+    final DateTime tomorrow = DateTime.now().add(Duration(days: 1));
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: tomorrow,
+        firstDate:tomorrow,
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add your Ride"),
       ),
-      body: Column(
-        children: [
-          Text('Select Time:'),
-          DropdownButton<String>(
-            value: selectedTime,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                setState(() {
-                  selectedTime = newValue;
-                  selectedPickupPoint = "Gate 3";
-                  selectedDestination = "Gate 3";
-                });
-              }
-            },
-            items: ['7:30', '17:30'].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
 
-          SizedBox(height: 20),
-          Text(selectedTime == '7:30' ? 'Select Destination:' : 'Enter Destination:'),
-
-          selectedTime == '7:30' ?
-
-          DropdownButton<String>(
-            value: selectedDestination,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                setState(() {
-                  selectedDestination = newValue;
-
-                });
-              }
-            },
-            items: ['Gate 3', 'Gate 4'].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          )
-
-              : TextField(
-            onChanged: (value) {
-              setState(() {
-                selectedDestination = value;
-              });
-            },
-            decoration: InputDecoration(
-              hintText: 'Enter destination',
+            Text('Select Date: ${selectedDate.toString().split(" ")[0]}'),
+            ElevatedButton(
+              onPressed: _selectDate,
+              child: Text('Select Date'),
             ),
-          ),
 
-          SizedBox(height: 20),
-          Text(selectedTime == '7:30' ? 'Enter Pickup Point:' : 'Select Pickup Point:'),
-
-          selectedTime == '7:30'
-              ? TextField(
-            onChanged: (value) {
-              setState(() {
-                selectedPickupPoint = value;
-              });
-            },
-            decoration: InputDecoration(
-              hintText: 'Enter pickup point',
+            Text('Select Time:'),
+            DropdownButton<String>(
+              value: selectedTime,
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedTime = newValue;
+                    selectedPickupPoint = "Gate 3";
+                    selectedDestination = "Gate 3";
+                  });
+                }
+              },
+              items: ['7:30', '17:30'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
-          )
-              : DropdownButton<String>(
-            value: selectedPickupPoint,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedPickupPoint = newValue!;
-              });
-            },
-            items: <String>['Gate 3', 'Gate 4'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 20),
-          TextField(
-            controller: priceController,
-            decoration: InputDecoration(labelText: 'Price'),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Handle the logic to save the trip details
-              // You can use the selectedTime, selectedPickupPoint, and selectedDestination variables here
-              _addRoute();
-              print('Time: $selectedTime, Pickup Point: $selectedPickupPoint, Destination: $selectedDestination');
 
-            },
-            child: Text('Save Trip'),
-          ),
+            SizedBox(height: 20),
+            Text(selectedTime == '7:30' ? 'Select Destination:' : 'Enter Destination:'),
 
-        ],
+            selectedTime == '7:30' ?
+
+            DropdownButton<String>(
+              value: selectedDestination,
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedDestination = newValue;
+
+                  });
+                }
+              },
+              items: ['Gate 3', 'Gate 4'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            )
+
+                : TextField(
+              onChanged: (value) {
+                setState(() {
+                  selectedDestination = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Enter destination',
+              ),
+            ),
+
+            SizedBox(height: 20),
+            Text(selectedTime == '7:30' ? 'Enter Pickup Point:' : 'Select Pickup Point:'),
+
+            selectedTime == '7:30'
+                ? TextField(
+              onChanged: (value) {
+                setState(() {
+                  selectedPickupPoint = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Enter pickup point',
+              ),
+            )
+                : DropdownButton<String>(
+              value: selectedPickupPoint,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedPickupPoint = newValue!;
+                });
+              },
+              items: <String>['Gate 3', 'Gate 4'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: priceController,
+              decoration: InputDecoration(labelText: 'Price'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Handle the logic to save the trip details
+                // You can use the selectedTime, selectedPickupPoint, and selectedDestination variables here
+                _addRoute();
+                print('Time: $selectedTime, Pickup Point: $selectedPickupPoint, Destination: $selectedDestination');
+
+              },
+              child: Text('Save Trip'),
+            ),
+
+          ],
 
 
-        /*children: [
+          /*children: [
           TextField(
             controller: fromController,
             decoration: InputDecoration(labelText: 'From'),
@@ -209,7 +236,11 @@ class _Add_RideState extends State<Add_Ride> {
           ),
 
         ],*/
+        ),
+
+
       ),
+
 
     );
   }
