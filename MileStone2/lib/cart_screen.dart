@@ -12,14 +12,20 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   String _selectedPaymentMethod = 'Cash';
   bool _isCashSelected = true;
+  late DatabaseReference usereref;
   late DatabaseReference routeref;
   var uid;
+  late var userdata;
 
 
 
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
     uid = FirebaseAuth.instance.currentUser?.uid.toString();
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
+    usereref = FirebaseDatabase.instance.ref("users/${uid}");
+    print(await usereref.get());
+    userdata = await usereref.get();
+    //print(userdata.child("name").value);
     var snapshot = await routeref.get();
     return snapshot;
 
@@ -225,7 +231,7 @@ class _CartScreenState extends State<CartScreen> {
 
                         if (data?["Passengers"] != null) {
                           Map<Object?, Object?>? passengers = data?["Passengers"];
-                          if (passengers!.containsValue(uid)) {
+                          if (passengers!.containsValue("Name:${userdata.child("name").value},Mobile:${userdata.child("phone").value}")) {
                             isUserAssigned = true;
                           }
                         }
@@ -234,7 +240,7 @@ class _CartScreenState extends State<CartScreen> {
                           counter  = int.parse(counter);
                           counter=counter+1;
                           // If the user is not assigned, proceed to add the user as a new passenger
-                          routeref.child("Passengers").update({"Passenger ${counter}": uid});
+                          routeref.child("Passengers").update({"Passenger ${counter}": "Name:${userdata.child("name").value},Mobile:${userdata.child("phone").value}"});//store user name and phone
 
                           routeref.child("numberOfPassengers").set(counter.toString());
 

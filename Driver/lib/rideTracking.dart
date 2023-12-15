@@ -12,22 +12,15 @@ class RideTracking extends StatefulWidget {
 class _RideTrackingState extends State<RideTracking> {
   late DatabaseReference routeref;
 
-  DatabaseReference userref = FirebaseDatabase.instance.ref("users");
-  var driverID;
-  var usersnapshot;
 
 
 
 
 
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
-    driverID = FirebaseAuth.instance.currentUser?.uid.toString();
+
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
-
-    usersnapshot = await userref.get();
     var snapshot = await routeref.get();
-
-
     return snapshot;
 
   }
@@ -70,10 +63,8 @@ class _RideTrackingState extends State<RideTracking> {
 
               // Add all values from the map to the list
               passengersList.addAll(passengersMap.values);
+              print(passengersList);
 
-              var usersData = (usersnapshot.value as Map<Object?, Object?>).cast<String, dynamic>();
-              
-              print(usersData);
 
 
 
@@ -284,12 +275,10 @@ class _RideTrackingState extends State<RideTracking> {
                               child: ListTile(
                                 title: Column(
                                   children: [
-                                    Text("name:${usersData[passengersList[index]]["name"]}"),
-
-
+                                    Text(passengersList[index].toString().split(",")[0]),
                                     ],
                                 ),
-                              subtitle: Text("phone:${usersData[passengersList[index]]["phone"]}"),
+                              subtitle: Text(passengersList[index].toString().split(",")[1]),
                               leading: ElevatedButton(
                                 onPressed: (){},
                                 child: Text("Accept",style: TextStyle(fontSize: 10.0),),
