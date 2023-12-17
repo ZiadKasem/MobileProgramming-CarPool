@@ -13,10 +13,6 @@ class _RideTrackingState extends State<RideTracking> {
   late DatabaseReference routeref;
 
 
-
-
-
-
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
 
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
@@ -323,6 +319,9 @@ class _RideTrackingState extends State<RideTracking> {
                               leading: ElevatedButton(// accept button
                                 onPressed: (){
 
+                                  setState(() {
+
+                                  });
                                   if(data?["numberOfPassengers"] != "4"){
                                     var counter =data?["numberOfPassengers"] ;
                                     counter  = int.parse(counter);
@@ -336,7 +335,7 @@ class _RideTrackingState extends State<RideTracking> {
                                       "name":"${passengersList[index].toString().split(",")[0]}",
                                       "phone":"${passengersList[index].toString().split(",")[1]}",
                                     });
-                                    
+
                                     routeref.child("Passengers").child("${passengersList[index].toString()}").remove();
                                     passengersList.remove(passengersList[index]);
                                     print("after remove ${passengersList}");

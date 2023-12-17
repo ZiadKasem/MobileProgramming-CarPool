@@ -4,8 +4,6 @@ Future Improvements							-
 = Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
-= at first accept from the driver the accepted passenger dosent appear	-
-	directly go out and reenter					-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -56,24 +54,23 @@ HomeScreen shows The Driver rides only					-
 -------------------------------------------------------------------------
 Phase5:									-
 			-Reject Passengers logic		Done	- 
-			-Payment and order tracking page.	Done
-			-Time constrains
-			-Profile
-			-remove upcomming rides
-			-test account
-			-improvements
-
+			-Payment and order tracking page.	Done	-
+-------------------------------------------------------------------------
+Phase6:									-
+			-Time constrains				-
+			-Profile					-
+			-remove upcomming rides				-
+			-test account					-
+			-improvements					-
+									-
 -------------------------------------------------------------------------
 
 Time constrains:
+Customers who need a ride from campus at 5:30 pm must reserve their seat before 1:00 pm same day
+Customers who need a ride at 7:30 must reserve their seat before 10:00 pm previous day.
 
 #Order must be confirmed before 11:30 pm for morning ride and before 4:30 pm for afternoon ride
 
-
-
-Customers who need a ride at 7:30 must reserve their seat before 10:00 pm previous day.
-
-Customers who need a ride from campus at 5:30 pm must reserve their seat before 1:00 pm same day
 -----------------------------------------------------------------------------
 
 

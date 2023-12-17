@@ -15,6 +15,9 @@ class _MyScreenState extends State<MyScreen> {
   late DatabaseReference _databaseReference;
   List<Map<String, String>> mapRoutes = [];
   ReusableMethods rm = ReusableMethods();
+  late String currentDate;
+  late String currentTime;
+  late String tommorowDate;
 
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
@@ -25,7 +28,15 @@ class _MyScreenState extends State<MyScreen> {
     super.initState();
     _databaseReference = FirebaseDatabase.instance.reference().child("routes");
     _setupDataListener();
-    print(rm.getFormattedDateTimeWithoutSeconds());
+    currentDate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
+    currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
+    tommorowDate=rm.getTomorrowDate();
+
+    print(currentDate);
+    print(currentTime);
+    print(tommorowDate);
+
+
   }
 
   void _setupDataListener() {
@@ -38,7 +49,45 @@ class _MyScreenState extends State<MyScreen> {
 
         if (data != null) {
           setState(() {
-            mapRoutes = data
+
+
+            if(currentTime.compareTo("12:59") <0 ){
+              print("current time before 1PM");
+
+              mapRoutes = data
+                  .where((entry) =>
+
+
+                  (entry.value['Time'] == "17:30" &&  ("${entry.value['Date']}".compareTo(currentDate)>=0))||
+                  (entry.value['Time'] == "7:30" &&  entry.value['Date'] == tommorowDate)
+
+
+
+              )
+                  .map((entry) => Map<String, String>.from({
+                'From': '${entry.value['From']}',
+                'To': '${entry.value['To']}',
+                'Time': '${entry.value['Time']}',
+                'RoutID':'${entry.value['RoutID']}',
+                "Date":'${entry.value['Date']}',
+                "price":  '${entry.value['price']}',
+                "TripStatus":'${entry.value['TripStatus']}',
+              }))
+                  .toList();
+
+
+            }
+            else if(currentTime.compareTo("12:59") >0  && currentTime.compareTo("19:59") <0 ){
+              print("current time after 1PM and before 10 PM");
+              mapRoutes = data
+                  .where((entry) =>
+
+
+              (("${entry.value['Date']}".compareTo(currentDate)>0))
+
+
+
+              )
                 .map((entry) => Map<String, String>.from({
               'From': '${entry.value['From']}',
               'To': '${entry.value['To']}',
@@ -49,68 +98,75 @@ class _MyScreenState extends State<MyScreen> {
               "TripStatus":'${entry.value['TripStatus']}',
             }))
                 .toList();
+
+            }
+            else if(currentTime.compareTo("19:59") >0 ){
+              print("current time after  10 PM");
+
+              mapRoutes = data
+                  .where((entry) =>
+
+              (entry.value['Time'] == "17:30" &&  ("${entry.value['Date']}".compareTo(tommorowDate)>=0))||
+              (entry.value['Time'] == "7:30" &&  ("${entry.value['Date']}".compareTo(tommorowDate)>0))
+
+
+
+              )
+                  .map((entry) => Map<String, String>.from({
+                'From': '${entry.value['From']}',
+                'To': '${entry.value['To']}',
+                'Time': '${entry.value['Time']}',
+                'RoutID':'${entry.value['RoutID']}',
+                "Date":'${entry.value['Date']}',
+                "price":  '${entry.value['price']}',
+                "TripStatus":'${entry.value['TripStatus']}',
+              }))
+                  .toList();
+
+
+
+            }
+            else{
+              print("you may missed a case");
+
+            }
+
+
+
+
+
+
+            /* Main origional
+              mapRoutes = data
+                .map((entry) => Map<String, String>.from({
+              'From': '${entry.value['From']}',
+              'To': '${entry.value['To']}',
+              'Time': '${entry.value['Time']}',
+              'RoutID':'${entry.value['RoutID']}',
+              "Date":'${entry.value['Date']}',
+              "price":  '${entry.value['price']}',
+              "TripStatus":'${entry.value['TripStatus']}',
+            }))
+                .toList();*/
+
+
+
+
+
           });
-          
-          /*if(rm.getCurrentTime().compareTo("21:59")>0){
-            print("time after 10PM");
 
-            setState(() {
-              mapRoutes = data
-                  .where((entry) => '${entry.value['Time']}' =="17:30")
-                  .map((entry) => Map<String, String>.from({
-                'From': '${entry.value['From']}',
-                'To': '${entry.value['To']}',
-                'Time': '${entry.value['Time']}',
-                'RoutID':'${entry.value['RoutID']}',
-                "price":  '${entry.value['price']}',
-                "TripStatus":'${entry.value['TripStatus']}',
-              }))
-                  .toList();
-            });
 
-          }
-          else if(rm.getFormattedDateTimeWithoutSeconds().compareTo("21:59")<0){
-            print("time before 10PM");
-            setState(() {
-              mapRoutes = data
-                  .map((entry) => Map<String, String>.from({
-                'From': '${entry.value['From']}',
-                'To': '${entry.value['To']}',
-                'Time': '${entry.value['Time']}',
-                'RoutID':'${entry.value['RoutID']}',
-                "price":  '${entry.value['price']}',
-                "TripStatus":'${entry.value['TripStatus']}',
-              }))
-                  .toList();
-            });
-          }
 
-          else if(rm.getFormattedDateTimeWithoutSeconds().compareTo("21:59")<0){
-            print("time before 10PM");
-            setState(() {
-              mapRoutes = data
-                  .map((entry) => Map<String, String>.from({
-                'From': '${entry.value['From']}',
-                'To': '${entry.value['To']}',
-                'Time': '${entry.value['Time']}',
-                'RoutID':'${entry.value['RoutID']}',
-                "price":  '${entry.value['price']}',
-                "TripStatus":'${entry.value['TripStatus']}',
-              }))
-                  .toList();
-            });
-          }*/
 
-          
 
-       
-       
+
         }//end of the if condition
       } else {
         print("Snapshot value is null");
       }
     });
   }
+
 
 
   Widget build(BuildContext context) {
