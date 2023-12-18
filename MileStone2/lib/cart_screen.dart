@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'Test_file/GlobalVariableForTesting.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key});
 
@@ -24,8 +26,13 @@ class _CartScreenState extends State<CartScreen> {
     print("routeInstanceID ${fun_routeInstanceID}");
     currentUserEmail = FirebaseAuth.instance.currentUser?.email.toString();
     print("email ${currentUserEmail}");
-    uid = FirebaseAuth.instance.currentUser?.uid.toString();
     routeref = FirebaseDatabase.instance.ref("routes/$fun_routeInstanceID");
+    if(TESTMODE == 1){
+      uid = "TEST";
+    }else{
+      uid = FirebaseAuth.instance.currentUser?.uid.toString();
+    }
+
     usereref = FirebaseDatabase.instance.ref("users/${uid}");
     userdata = await usereref.get();
     var snapshot = await routeref.get();

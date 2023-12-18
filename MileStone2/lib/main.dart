@@ -7,7 +7,7 @@ import 'package:project/order_history.dart';
 import 'package:project/order_tracking.dart';
 import 'package:project/order_tracking_page.dart';
 import 'package:project/profile.dart';
-import 'package:project/upcoming_rides.dart';
+
 
 import 'Authentication/auth.dart';
 import 'firebase_options.dart';
@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
         '/Login_screen': (context) => LoginScreen(),
         '/Profile_screen': (context) => ProfileScreen(),
         '/OrderHistory_screen': (context) => OrderHistoryScreen(),
-        '/UpcommingRides_screen':(context) => UpcommingRides(),
         '/OrderTracking_screen':(context) => OrderTracking(),
         '/Cart_screen':(context) => CartScreen(),
         '/home_screen':(context) => MyScreen(),

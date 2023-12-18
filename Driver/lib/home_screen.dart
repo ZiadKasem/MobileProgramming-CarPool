@@ -174,7 +174,6 @@ class _MyScreenState extends State<MyScreen> {
           ),
           _buildDrawerItem(context, 'Profile Page', '/Profile_screen'),
           _buildDrawerItem(context, 'Orders History', '/OrderHistory_screen'),
-          _buildDrawerItem(context, 'Upcoming Rides', '/UpcommingRides_screen'),
           _buildDrawerItem(context, 'Logout', '/Login_screen'),
         ],
       ),

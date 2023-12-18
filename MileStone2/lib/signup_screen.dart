@@ -54,18 +54,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
     })
     ).user;
     if(!context.mounted)return;
-    DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
-    Map userDataMap = {
-      "name":nameTextEditingController.text.trim(),
-      "email":emailTextEditingController.text.trim(),
-      "phone":phoneTextEditingController.text.trim(),
-      "id":userFirebase.uid,
-      "Type":"USER",
-      "blockStatus":"no",
-    };
-    usersRef.set(userDataMap);
+    var currentUser = FirebaseAuth.instance.currentUser!;
+    if(currentUser.email == "test@eng.asu.edu.eg"){
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child("TEST");
+      Map userDataMap = {
+        "name":nameTextEditingController.text.trim(),
+        "email":emailTextEditingController.text.trim(),
+        "phone":phoneTextEditingController.text.trim(),
+        "id":"TEST",
+        "Type":"USER",
+        "blockStatus":"no",
+      };
+      usersRef.set(userDataMap);
 
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+
+    }
+    else{
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
+      Map userDataMap = {
+        "name":nameTextEditingController.text.trim(),
+        "email":emailTextEditingController.text.trim(),
+        "phone":phoneTextEditingController.text.trim(),
+        "id":userFirebase.uid,
+        "Type":"USER",
+        "blockStatus":"no",
+      };
+      usersRef.set(userDataMap);
+
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+    }
+
 
   }
   
