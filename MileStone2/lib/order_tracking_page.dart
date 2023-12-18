@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:project/reusable/reusable_methods.dart';
+
 
 class OrderTrackingPage extends StatefulWidget {
   const OrderTrackingPage({super.key});
@@ -10,14 +12,14 @@ class OrderTrackingPage extends StatefulWidget {
 }
 
 class _OrderTrackingPageState extends State<OrderTrackingPage> {
-
-  String _selectedPaymentMethod = 'Cash';
-  bool _isCashSelected = true;
   late DatabaseReference usereref;
   late DatabaseReference routeref;
   var uid;
   var currentUserEmail;
   late var userdata;
+  ReusableMethods rm = ReusableMethods();
+  late String currentdate;
+  late String currentTime;
 
 
   Future<DataSnapshot> _fetchData(String fun_routeInstanceID) async {
@@ -31,11 +33,18 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
     var snapshot = await routeref.get();
 
 
-
     return snapshot;
 
   }
 
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentdate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
+    currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
+  }
 
 
   @override
@@ -62,6 +71,27 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
               //var data = snapshot.data!.value as Map<String, dynamic>;
               var data = (snapshot.data!.value as Map<Object?, Object?>).cast<String, dynamic>();
 
+
+
+
+              /*
+              * if time after 23:29 and ride is 7:30
+              * reject all the passengers in Passengers node
+              * add all the passengers node to rejectedPassengers node
+              * remove all passengers in passengers node
+              * */
+
+              /*if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30" || true ){
+                print("passengers data ${data["Passengers"]}");
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
+                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
+
+
+              }*/
+
+
+
+
               List<dynamic> acceptedPassengersList = [];
               if (data["acceptedPassengers"].toString() == "null"){
                 print("No accepted passengers yet");
@@ -71,7 +101,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 var acceptedPassengersListMap = Map<String, dynamic>.from(data["acceptedPassengers"]);
                 // Add all values from the map to the list
                 acceptedPassengersList.addAll(acceptedPassengersListMap.values);
-                //print(acceptedPassengersList);
+                print(acceptedPassengersList);
               }
 
 
@@ -84,7 +114,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 var rejectedPassengersListMap = Map<String, dynamic>.from(data["rejectedPassengers"]);
                 // Add all values from the map to the list
                 rejectedPassengersList.addAll(rejectedPassengersListMap.values);
-                //print(acceptedPassengersList);
+                print(rejectedPassengersList);
               }
 
 
@@ -225,10 +255,11 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                               child: ListTile(
                                 title: Column(
                                   children: [
-                                    Text(acceptedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                    Text("Name ${acceptedPassengersList[index].toString().split(',')[0]}"),
+                                    Text("Mobile ${acceptedPassengersList[index].toString().split(',')[1]}"),
                                   ],
                                 ),
-                                subtitle: Text(acceptedPassengersList[index].toString().split(",")[0].split("{")[1]),
+                                subtitle: Text("Status: Accepted"),
 
                               ),
                             );
@@ -254,10 +285,11 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                               child: ListTile(
                                 title: Column(
                                   children: [
-                                    Text(rejectedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                    Text("Name ${rejectedPassengersList[index].toString().split(',')[0]}"),
+                                    Text("Mobile ${rejectedPassengersList[index].toString().split(',')[1]}"),
                                   ],
                                 ),
-                                subtitle: Text(rejectedPassengersList[index].toString().split(",")[0].split("{")[1]),
+                                subtitle: Text("Status: Rejected"),
 
                               ),
                             );

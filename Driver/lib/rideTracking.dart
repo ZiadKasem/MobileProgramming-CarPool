@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -59,15 +58,27 @@ class _RideTrackingState extends State<RideTracking> {
               print("before ${passengersList}");
               }
 
+
+
+              /*
+              * if time after 23:29 and ride is 7:30
+              * reject all the passengers in Passengers list/node
+              * add all the passengers list in rejectedPassengers node
+              * remove all passengers in passengers node
+              * remove all passengers in passengers list
+              * */
+
+
               if (data["acceptedPassengers"].toString() == "null"){
                 print("No accepted passengers yet");
 
               }
               else{
+                print("There are accepted passengers");
                 var acceptedPassengersListMap = Map<String, dynamic>.from(data["acceptedPassengers"]);
                 // Add all values from the map to the list
                 acceptedPassengersList.addAll(acceptedPassengersListMap.values);
-                //print(acceptedPassengersList);
+                print(acceptedPassengersList);
               }
 
 
@@ -282,10 +293,11 @@ class _RideTrackingState extends State<RideTracking> {
                                child: ListTile(
                                  title: Column(
                                    children: [
-                                     Text(acceptedPassengersList[index].toString().split(",")[1].split("}")[0]),
+                                     Text("Name ${acceptedPassengersList[index].toString().split(',')[0]}"),
+                                     Text("Mobile ${acceptedPassengersList[index].toString().split(',')[1]}"),
                                    ],
                                  ),
-                                 subtitle: Text(acceptedPassengersList[index].toString().split(",")[0].split("{")[1]),
+                                 subtitle: Text("Status: Accepted"),
 
                                ),
                              );
@@ -330,11 +342,7 @@ class _RideTrackingState extends State<RideTracking> {
 
                                     routeref
                                         .child("acceptedPassengers")
-                                        .child("${passengersList[index].toString()}")
-                                        .update({
-                                      "name":"${passengersList[index].toString().split(",")[0]}",
-                                      "phone":"${passengersList[index].toString().split(",")[1]}",
-                                    });
+                                        .update({"${passengersList[index]}":"${passengersList[index]}"});
 
                                     routeref.child("Passengers").child("${passengersList[index].toString()}").remove();
                                     passengersList.remove(passengersList[index]);
@@ -362,13 +370,12 @@ class _RideTrackingState extends State<RideTracking> {
                               ),
                               trailing: ElevatedButton(
                                 onPressed: (){
+                                  setState(() {
+
+                                  });
                                   routeref
                                       .child("rejectedPassengers")
-                                      .child("${passengersList[index].toString()}")
-                                      .update({
-                                    "name":"${passengersList[index].toString().split(",")[0]}",
-                                    "phone":"${passengersList[index].toString().split(",")[1]}",
-                                  });
+                                      .update({"${passengersList[index]}":"${passengersList[index]}"});
 
                                   routeref.child("Passengers").child("${passengersList[index].toString()}").remove();
                                   passengersList.remove(passengersList[index]);

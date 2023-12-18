@@ -25,10 +25,19 @@ class ReusableMethods{
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  String getFormattedDateTimeWithoutSeconds() {
+  String getFormattedDateTime() {
     DateTime now = DateTime.now();
-    String formattedDateTime = DateFormat('MM-dd HH:mm').format(now);
+    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(now);
     return formattedDateTime;
+  }
+
+
+  String getTomorrowDate() {
+    DateTime now = DateTime.now();
+    DateTime tomorrow = now.add(Duration(days: 1));
+
+    String formattedTomorrowDate = DateFormat('yyyy-MM-dd').format(tomorrow);
+    return formattedTomorrowDate;
   }
 
 }

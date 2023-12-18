@@ -57,7 +57,8 @@ Phase5:									-
 			-Payment and order tracking page.	Done	-
 -------------------------------------------------------------------------
 Phase6:									-
-			-Time constrains				-
+			-UI of accept/reject in both 		Done	-
+			-Time constrainsof driver 			-
 			-Profile					-
 			-remove upcomming rides				-
 			-test account					-
@@ -70,6 +71,7 @@ Customers who need a ride from campus at 5:30 pm must reserve their seat before 
 Customers who need a ride at 7:30 must reserve their seat before 10:00 pm previous day.
 
 #Order must be confirmed before 11:30 pm for morning ride and before 4:30 pm for afternoon ride
+else all pending orders become rejected
 
 -----------------------------------------------------------------------------
 
