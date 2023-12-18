@@ -1,3 +1,5 @@
+
+
 import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -59,28 +61,6 @@ class _RideTrackingState extends State<RideTracking> {
               // Create an empty list to store the values
               List<dynamic> passengersList = [];
               List<dynamic> acceptedPassengersList = [];
-
-
-
-              if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30"  && currentdate.compareTo(data["Date"]) <0 && data["Passengers"]!=null){
-                print("the ride in the next day but the clock is after 11:30 PM");
-                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
-                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-                routeref.child("Passengers").remove();
-              }
-              if(currentdate.compareTo(data["Date"]) >= 0 && data["Passengers"]!=null){
-                print("the ride in the Same day or in the past");
-                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
-                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-                routeref.child("Passengers").remove();
-              }
-              if(currentTime.compareTo("16:29")>0 && data["Time"] == "17:30"  && currentdate.compareTo(data["Date"]) == 0 && data["Passengers"]!=null){
-                print("the ride in the same day but the clock is after 4:29 PM");
-                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
-                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-                routeref.child("Passengers").remove();
-              }
-
 
 
 
@@ -320,8 +300,8 @@ class _RideTrackingState extends State<RideTracking> {
                                child: ListTile(
                                  title: Column(
                                    children: [
-                                     Text("Name ${acceptedPassengersList[index].toString().split(',')[0]}"),
-                                     Text("Mobile ${acceptedPassengersList[index].toString().split(',')[1]}"),
+                                     Text("Name ${acceptedPassengersList[index].toString()}"),//.split(',')[0]}"),
+                                     Text("Mobile ${acceptedPassengersList[index].toString()}"),//.split(',')[0]}"),
                                    ],
                                  ),
                                  subtitle: Text("Status: Accepted"),
@@ -351,16 +331,17 @@ class _RideTrackingState extends State<RideTracking> {
                               child: ListTile(
                                 title: Column(
                                   children: [
-                                    Text(passengersList[index].toString().split(",")[0]),
+                                    Text(passengersList[index].toString()),//.split(",")[0]),
                                     ],
                                 ),
-                              subtitle: Text(passengersList[index].toString().split(",")[1]),
+                              subtitle: Text(passengersList[index].toString()),//.split(",")[1]),
                               leading: ElevatedButton(// accept button
                                 onPressed: (){
 
                                   setState(() {
 
                                   });
+
                                   if(data?["numberOfPassengers"] != "4"){
                                     var counter =data?["numberOfPassengers"] ;
                                     counter  = int.parse(counter);

@@ -1,3 +1,4 @@
+import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,20 +12,28 @@ class MyScreen extends StatefulWidget {
 }
 
 class _MyScreenState extends State<MyScreen> {
-  late DatabaseReference _databaseReference;
+  late DatabaseReference routeref;
   List<Map<String, String>> mapRoutes = [];
   late String? currentDriverID;
 
+  ReusableMethods rm = ReusableMethods();
+  late String currentdate;
+  late String currentTime;
+
   void initState() {
     super.initState();
-    _databaseReference = FirebaseDatabase.instance.reference().child("routes");
+    //routeref = FirebaseDatabase.instance.reference().child("routes");
+    routeref = FirebaseDatabase.instance.ref("routes");
     _setupDataListener();
     currentDriverID = FirebaseAuth.instance.currentUser?.uid;
     print(currentDriverID);
+
+    currentdate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
+    currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
   }
 
   void _setupDataListener() {
-    _databaseReference.onValue.listen((event) {
+    routeref.onValue.listen((event) {
       if (event.snapshot.value != null) {
         print("Retrieved Data: ${event.snapshot.value}");
 
@@ -43,6 +52,7 @@ class _MyScreenState extends State<MyScreen> {
               "Date":'${entry.value['Date']}',
               "price":  '${entry.value['price']}',
               "TripStatus":'${entry.value['TripStatus']}',
+              "Passengers":'${entry.value['Passengers']}',
 
             }))
                 .toList();
@@ -98,7 +108,42 @@ class _MyScreenState extends State<MyScreen> {
                     "assets/images/car-sharing.png",
                     height: 25,
                   ),
-                  onTap: () {
+                  onTap: () async{
+
+                    if(currentTime.compareTo("23:29")>0 && mapRoutes[index]["Time"] == "7:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) <0 && mapRoutes[index]["Passengers"]!="null"){
+                      print("the ride in the next day but the clock is after 11:30 PM");
+                      var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                      Map<String,dynamic> myMap={partTwo:partTwo};
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                      setState(() {
+
+                      });
+                    }
+                    print(mapRoutes[index]["Passengers"]?.isNotEmpty);
+                    print(mapRoutes[index]["Passengers"]);
+                    if(currentdate.compareTo(mapRoutes[index]["Date"].toString()) >= 0 && mapRoutes[index]["Passengers"].toString()!="null"){
+                      print("the ride is 7:30 and we are after 12AM in the Same day or the ride is in the past");
+                      print(mapRoutes[index]["Passengers"]);
+                      var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                      Map<String,dynamic> myMap={partTwo:partTwo};
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                      setState(() {
+
+                      });
+                    }
+                    if(currentTime.compareTo("16:29")>0 && mapRoutes[index]["Time"] == "17:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) == 0 && mapRoutes[index]["Passengers"]!="null"){
+                      print("the ride in the same day but the clock is after 4:29 PM");
+                      var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                      Map<String,dynamic> myMap={partTwo:partTwo};
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                      await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                      setState(() {
+
+                      });
+                    }
+
                     Navigator.pushNamed(context, "/rideTracking",arguments: {"RoutID": "${mapRoutes[index]['RoutID']}"});
                   },
                 ),

@@ -77,26 +77,6 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
 
 
 
-              /*
-              * if time after 23:29 and ride is 7:30
-              * reject all the passengers in Passengers node
-              * add all the passengers node to rejectedPassengers node
-              * remove all passengers in passengers node
-              * */
-
-
-              if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30"  && currentdate.compareTo(data["Date"]) <0 && data["Passengers"]!=null){// Case 1
-               print("the ride in the next day but the clock is after 11:30 PM");
-                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
-                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-                routeref.child("Passengers").remove();
-              }
-              if(currentdate.compareTo(data["Date"]) >= 0 && data["Passengers"]!=null){// Case 2:
-                print("the ride in the Same day or in the past");
-                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
-                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-                routeref.child("Passengers").remove();
-              }
 
 
 

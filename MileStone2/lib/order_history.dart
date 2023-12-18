@@ -117,7 +117,43 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                           "assets/images/car-sharing.png",
                           height: 25,
                         ),
-                        onTap: () {
+                        onTap: () async{
+
+
+
+                          if(currentTime.compareTo("23:29")>0 && mapRoutes[index]["Time"] == "7:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) <0 && mapRoutes[index]["Passengers"]!="null"){
+                            print("the ride in the next day but the clock is after 11:30 PM");
+                            var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                            Map<String,dynamic> myMap={partTwo:partTwo};
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                            setState(() {
+
+                            });
+                          }
+                          print(mapRoutes[index]["Passengers"]?.isNotEmpty);
+                          print(mapRoutes[index]["Passengers"]);
+                          if(currentdate.compareTo(mapRoutes[index]["Date"].toString()) >= 0 && mapRoutes[index]["Passengers"].toString()!="null"){
+                            print("the ride is 7:30 and we are after 12AM in the Same day or the ride is in the past");
+                            print(mapRoutes[index]["Passengers"]);
+                            var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                            Map<String,dynamic> myMap={partTwo:partTwo};
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                            setState(() {
+
+                            });
+                          }
+                          if(currentTime.compareTo("16:29")>0 && mapRoutes[index]["Time"] == "17:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) == 0 && mapRoutes[index]["Passengers"]!="null"){
+                            print("the ride in the same day but the clock is after 4:29 PM");
+                            var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
+                            Map<String,dynamic> myMap={partTwo:partTwo};
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
+                            await routeref.child(mapRoutes[index]["RoutID"]!).child("Passengers").remove();
+                            setState(() {
+
+                            });
+                          }
 
 
 
