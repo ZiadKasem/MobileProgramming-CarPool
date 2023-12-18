@@ -61,7 +61,7 @@ Phase6:									-
 			-Time constrainsof 	 		Done	-
 			-Profile Driver				Done	-
 			-remove upcomming rides			Done	-
-			-test account					-
+			-test account				Done	-
 			-improvements					-
 -------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ Phase6:									-
 -Test Account:							-
 -								-
 -	Profile ?						-
--	Features ?						-
+-	Features {reserve trip/track trip/profile}		-
 -Idea: create manual entity for it in the realtime database	-
 -----------------------------------------------------------------
 

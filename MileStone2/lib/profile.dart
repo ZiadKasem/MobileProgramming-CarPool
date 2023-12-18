@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:project/Test_file/GlobalVariableForTesting.dart';
 import 'package:sqflite/sqflite.dart';
 import 'reusable/Text_box_component.dart';
 import 'Local Database/My_Database.dart';
@@ -14,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late User currentUser;
+  late var currentUser;
   late DatabaseReference usersRef;
   late DatabaseReference snapshot;
   String? username;
@@ -28,9 +29,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    currentUser = FirebaseAuth.instance.currentUser!;
+    if(TESTMODE == 0){
+      currentUser = FirebaseAuth.instance.currentUser!;
+    }else{
+      print("Assuming we are pointing to FirebaseAuth as Tester");
+      currentUser = "TESTER";
+    }
+
     usersRef = FirebaseDatabase.instance.reference();
-    snapshot = usersRef.child('users/${currentUser.uid}');
+    if(TESTMODE == 0){
+      snapshot = usersRef.child('users/${currentUser.uid}');
+    }else{
+      snapshot = usersRef.child('users/TEST');
+      print("testing");
+    }
+
 
     if (username == null) username = "loading";
     if (mobile == null) mobile = "loading";
@@ -66,9 +79,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> readLocalData() async {
     // Read data from the local database
     print("Read data from the local database");
-    List<Map<String, dynamic>> result = await localDatabase.rawQuery('''
+    List<Map<String, dynamic>> result;
+    if(TESTMODE == 0){
+      result = await localDatabase.rawQuery('''
       SELECT * FROM users WHERE id = ?
     ''', [currentUser.uid]);
+    }else{
+      result = await localDatabase.rawQuery('''
+      SELECT * FROM users WHERE id = ?
+    ''', ["TEST"]);
+    }
+
 
     if (result.isNotEmpty) {
       // Data found in the local database
@@ -79,7 +100,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     } else {
       // No data found in the local database
-      print('No local data found for user ${currentUser.uid}');
+      if(TESTMODE == 0){
+        print('No local data found for user ${currentUser.uid}');
+      }else{
+        print('No local data found for user TEST');
+      }
+
     }
   }
 
@@ -90,7 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> readAttributes() async {
     DataSnapshot dataSnapshot = await snapshot.get();
-
+    print("printing datasnapshot");
+    print(dataSnapshot);
     if (dataSnapshot.value != null && dataSnapshot.value is Map<dynamic, dynamic>) {
       Map<dynamic, dynamic> dataMap = dataSnapshot.value as Map<dynamic, dynamic>;
 
@@ -111,10 +138,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> saveUserDataToLocalDatabase(String username, String mobile) async {
-    await localDatabase.rawInsert('''
+    if(TESTMODE==0){
+      await localDatabase.rawInsert('''
       INSERT OR REPLACE INTO users (id, name, phone)
       VALUES (?, ?, ?)
     ''', [currentUser.uid, username, mobile]);
+    }else{
+      await localDatabase.rawInsert('''
+      INSERT OR REPLACE INTO users (id, name, phone)
+      VALUES (?, ?, ?)
+    ''', ["TEST", username, mobile]);
+    }
+
   }
 
   Future<void> editField(String field) async {
@@ -158,7 +193,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> updateField(String field, String newValue) async {
     try {
-      await usersRef.child('users/${currentUser.uid}').update({field.toLowerCase(): newValue});
+      if(TESTMODE ==0){
+        await usersRef.child('users/${currentUser.uid}').update({field.toLowerCase(): newValue});
+      }else{
+        await usersRef.child('users/TEST').update({field.toLowerCase(): newValue});
+      }
+
     } catch (error) {
       print('Error updating $field: $error');
     }
@@ -180,8 +220,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 50),
           Icon(Icons.person, size: 90),
           const SizedBox(height: 20),
+          TESTMODE == 0?
           Text(
             currentUser.email!,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue),
+          )
+          :Text(
+            "test@eng.asu.edu.eg",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.blue),
           ),

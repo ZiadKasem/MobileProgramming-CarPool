@@ -1,5 +1,3 @@
-
-
 import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';

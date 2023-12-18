@@ -1,9 +1,9 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:project/reusable/reusable_methods.dart';
+
+import 'Test_file/GlobalVariableForTesting.dart';
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
 
@@ -52,9 +52,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               // Filter based on TotalPassengersAssigned for the current user
               var totalPassengersAssigned =
               entry.value['TotalPassengersAssigned'] as Map?;
-              return totalPassengersAssigned != null &&
-                  totalPassengersAssigned.containsKey(
-                      FirebaseAuth.instance.currentUser?.uid);
+              if(TESTMODE == 0){
+                return totalPassengersAssigned != null && totalPassengersAssigned.containsKey(FirebaseAuth.instance.currentUser?.uid);
+              }
+              else{
+                return totalPassengersAssigned != null && totalPassengersAssigned.containsKey("TEST");
+              }
+
             })
                 .map((entry) =>
             Map<String, String>.from({
