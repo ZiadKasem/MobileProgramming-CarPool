@@ -4,6 +4,7 @@ Future Improvements							-
 = Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
+= Find place where Time constrains logic executed before entering 	-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -58,19 +59,21 @@ Phase5:									-
 -------------------------------------------------------------------------
 Phase6:									-
 			-UI of accept/reject in both 		Done	-
-			-Time constrainsof driver 			-
+			-Time constrainsof driver 		Done	-
 			-Profile					-
 			-remove upcomming rides				-
 			-test account					-
 			-improvements					-
-									-
 -------------------------------------------------------------------------
 
 Time constrains:
 Customers who need a ride from campus at 5:30 pm must reserve their seat before 1:00 pm same day
 Customers who need a ride at 7:30 must reserve their seat before 10:00 pm previous day.
 
-#Order must be confirmed before 11:30 pm for morning ride and before 4:30 pm for afternoon ride
+#Order must be confirmed before 11:30 pm for morning ride 
+{if colock after 11:29 and the trip is in the next day/ if clock after 00:00 and trip in the same day}
+
+and before 4:30 pm for afternoon ride
 else all pending orders become rejected
 
 -----------------------------------------------------------------------------

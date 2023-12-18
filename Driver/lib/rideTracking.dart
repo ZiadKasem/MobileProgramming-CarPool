@@ -1,3 +1,4 @@
+import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -12,12 +13,26 @@ class _RideTrackingState extends State<RideTracking> {
   late DatabaseReference routeref;
 
 
+  ReusableMethods rm = ReusableMethods();
+  late String currentdate;
+  late String currentTime;
+
+
   Future<DataSnapshot> _fetchData(String routeInstanceID) async {
 
     routeref = FirebaseDatabase.instance.ref("routes/$routeInstanceID");
     var snapshot = await routeref.get();
     return snapshot;
 
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentdate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
+    currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
   }
 
 
@@ -47,6 +62,28 @@ class _RideTrackingState extends State<RideTracking> {
 
 
 
+              if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30"  && currentdate.compareTo(data["Date"]) <0 && data["Passengers"]!=null){
+                print("the ride in the next day but the clock is after 11:30 PM");
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
+                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
+                routeref.child("Passengers").remove();
+              }
+              if(currentdate.compareTo(data["Date"]) >= 0 && data["Passengers"]!=null){
+                print("the ride in the Same day or in the past");
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
+                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
+                routeref.child("Passengers").remove();
+              }
+              if(currentTime.compareTo("16:29")>0 && data["Time"] == "17:30"  && currentdate.compareTo(data["Date"]) == 0 && data["Passengers"]!=null){
+                print("the ride in the same day but the clock is after 4:29 PM");
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
+                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
+                routeref.child("Passengers").remove();
+              }
+
+
+
+
               if (data["Passengers"].toString() == "null"){
                 print("No passengers yet");
 
@@ -57,16 +94,6 @@ class _RideTrackingState extends State<RideTracking> {
               passengersList.addAll(passengersMap.values);
               print("before ${passengersList}");
               }
-
-
-
-              /*
-              * if time after 23:29 and ride is 7:30
-              * reject all the passengers in Passengers list/node
-              * add all the passengers list in rejectedPassengers node
-              * remove all passengers in passengers node
-              * remove all passengers in passengers list
-              * */
 
 
               if (data["acceptedPassengers"].toString() == "null"){

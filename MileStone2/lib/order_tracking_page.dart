@@ -33,6 +33,9 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
     var snapshot = await routeref.get();
 
 
+
+
+
     return snapshot;
 
   }
@@ -81,13 +84,19 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
               * remove all passengers in passengers node
               * */
 
-              /*if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30" || true ){
-                print("passengers data ${data["Passengers"]}");
+
+              if(currentTime.compareTo("23:29")>0 && data["Time"] == "7:30"  && currentdate.compareTo(data["Date"]) <0 && data["Passengers"]!=null){// Case 1
+               print("the ride in the next day but the clock is after 11:30 PM");
                 var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
                 routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
-
-
-              }*/
+                routeref.child("Passengers").remove();
+              }
+              if(currentdate.compareTo(data["Date"]) >= 0 && data["Passengers"]!=null){// Case 2:
+                print("the ride in the Same day or in the past");
+                var rejectedPassengersListMap = Map<String, dynamic>.from(data["Passengers"]);
+                routeref.child("rejectedPassengers").update(rejectedPassengersListMap);
+                routeref.child("Passengers").remove();
+              }
 
 
 

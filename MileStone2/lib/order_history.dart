@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:project/reusable/reusable_methods.dart';
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
 
@@ -9,7 +12,7 @@ class OrderHistoryScreen extends StatefulWidget {
 }
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
-  late DatabaseReference _databaseReference;
+  late DatabaseReference routeref;
   late DatabaseReference _usersAssignedReference;
   List<Map<String, String>> mapRoutes = [];
 
@@ -17,15 +20,25 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   TextEditingController toController = TextEditingController();
   TextEditingController timeController = TextEditingController();
 
+
+  ReusableMethods rm = ReusableMethods();
+  late String currentdate;
+  late String currentTime;
+
   void initState() {
     super.initState();
-    _databaseReference = FirebaseDatabase.instance.ref().child("routes");
+    routeref = FirebaseDatabase.instance.ref().child("routes");
     _usersAssignedReference = FirebaseDatabase.instance.ref().child("routes/TotalPassengersAssigned");
+
+    currentdate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
+    currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
+
+
     _setupDataListener();
   }
 
   void _setupDataListener() {
-    _databaseReference.onValue.listen((event) {
+    routeref.onValue.listen((event) {
       if (event.snapshot.value != null) {
         print("Retrieved Data: ${event.snapshot.value}");
 
@@ -52,6 +65,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               "price": '${entry.value['price']}',
               "Date":'${entry.value['Date']}',
               "TripStatus": '${entry.value['TripStatus']}',
+              "Passengers":'${entry.value['Passengers']}',
             }))
                 .toList();
           });
@@ -104,6 +118,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                           height: 25,
                         ),
                         onTap: () {
+
+
+
                           Navigator.pushNamed(context,
                               "/order_tracking_page",
                               arguments: {

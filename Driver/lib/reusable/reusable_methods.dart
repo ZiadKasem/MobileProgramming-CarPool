@@ -25,7 +25,7 @@ class ReusableMethods{
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  String getFormattedDateTime() {
+  String getFormattedDateTimeWithoutSeconds() {
     DateTime now = DateTime.now();
     String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(now);
     return formattedDateTime;
