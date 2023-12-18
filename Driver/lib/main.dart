@@ -2,6 +2,7 @@ import 'package:driver_app/Authentication/auth.dart';
 import 'package:driver_app/Welcome_pages/signup_screen.dart';
 import 'package:driver_app/add_ride.dart';
 import 'package:driver_app/home_screen.dart';
+import 'package:driver_app/profile.dart';
 import 'package:driver_app/rideTracking.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +37,7 @@ class MyApp extends StatelessWidget {
       home: AuthPage(),
       routes: {
         '/Login_screen': (context) => LoginScreen(),
-        //'/Profile_screen': (context) => ProfileScreen(),
-        //'/OrderHistory_screen': (context) => OrderHistoryScreen(),
-        //'/UpcommingRides_screen':(context) => UpcommingRides(),
-        //'/OrderTracking_screen':(context) => OrderTracking(),
+        '/Profile_screen': (context) => ProfileScreen(),
         '/rideTracking':(context) => RideTracking(),
         '/add_ride':(context) => Add_Ride(),
         '/home_screen':(context) => MyScreen(),
