@@ -4,6 +4,7 @@ Future Improvements							-
 = Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
+= add test account to driver
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-

@@ -18,9 +18,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  TextEditingController passwordConfirmationTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
   ReusableMethods rMethods = ReusableMethods();
   Authentication_class AUTH = Authentication_class();
+  bool isLoading = false; // Add a loading indicator variable
 
   checkIfNetworkIsAvailabe(){
     rMethods.checkConnectivity(context);
@@ -31,27 +33,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if(nameTextEditingController.text.trim().length<3){
       rMethods.displaySnakBar("Name Must Be Atleast 4 charachters", context);
     }
+    else if(phoneTextEditingController.text.trim().length<11){
+      rMethods.displaySnakBar("Phone Number Must Be Atleast 11 Digets", context);
+    }
     else if(!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")){// try to find method to check last few digits
       rMethods.displaySnakBar("Please SignUp with ASU Domain Email", context);
     }
     else if(passwordTextEditingController.text.trim().length<6){
       rMethods.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
     }
-    else if(phoneTextEditingController.text.trim().length<11){
-      rMethods.displaySnakBar("Phone Number Must Be Atleast 11 Digets", context);
+    else if(passwordConfirmationTextEditingController.text.trim() != passwordTextEditingController.text.trim()){
+      rMethods.displaySnakBar("Confirm password is not the same", context);
     }
     else{
       registerNewUser();
     }
 
   }
+  registerNewUser() async {
+    setState(() {
+      isLoading = true; // Set loading to true before starting the login process
+    });
 
-  registerNewUser()async{
-    AUTH.Sign_up(emailTextEditingController.text.trim(),
+
+   await AUTH.Sign_up(emailTextEditingController.text.trim(),
         passwordTextEditingController.text.trim(),
         nameTextEditingController.text.trim(),
         phoneTextEditingController.text.trim(),
-        context);
+        context).whenComplete(() {
+     setState(() {
+       isLoading = false; // Set loading to false when the login process is complete
+     });
+   });
+
   }
   
   @override
@@ -78,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Text(
-                  "Signup",
+                  "Driver Signup",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -100,7 +114,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+
+                SizedBox(height: 5,),
+                TextField (
+                  controller: phoneTextEditingController,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                      labelText: "User Phone number",
+                      labelStyle: TextStyle(
+                        fontSize: 14,
+                      )
+                  ),
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 //emailTextField
                 TextField(
                   controller: emailTextEditingController,
@@ -116,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
                 //passTextField
                 TextField (
                   controller: passwordTextEditingController,
@@ -133,14 +163,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
-                //phone number
+                SizedBox(height: 5,),
+                //passTextField
                 TextField (
-                  controller: phoneTextEditingController,
-                  keyboardType: TextInputType.phone,
+                  controller: passwordConfirmationTextEditingController,
+                  keyboardType: TextInputType.text,
                   obscureText: true, // to hide password
                   decoration: const InputDecoration(
-                      labelText: "User Phone number",
+                      labelText: "Confirm Password",
                       labelStyle: TextStyle(
                         fontSize: 14,
                       )
@@ -150,12 +180,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
+                //phone number
+
                 //signup button
 
                 ElevatedButton(
 
-                  child: const Text(
+                  child: isLoading
+                      ? CircularProgressIndicator():
+                  Text(
                     "Sign Up",
                     style: TextStyle(color: Colors.white,),
                   ),
@@ -169,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 //having an account navigate to login Screen
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
                 TextButton(
                   onPressed: (){
                     Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>LoginScreen()));
