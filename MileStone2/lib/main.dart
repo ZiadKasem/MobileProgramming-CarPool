@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project/cart_screen.dart';
 import 'package:project/home_screen.dart';
-import 'package:project/login_screen.dart';
+import 'package:project/Welcome_pages/login_screen.dart';
 import 'package:project/order_history.dart';
-import 'package:project/order_tracking.dart';
 import 'package:project/order_tracking_page.dart';
 import 'package:project/profile.dart';
 
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
         '/Login_screen': (context) => LoginScreen(),
         '/Profile_screen': (context) => ProfileScreen(),
         '/OrderHistory_screen': (context) => OrderHistoryScreen(),
-        '/OrderTracking_screen':(context) => OrderTracking(),
         '/Cart_screen':(context) => CartScreen(),
         '/home_screen':(context) => MyScreen(),
         '/order_tracking_page':(context) => OrderTrackingPage(),

@@ -91,7 +91,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Text("will implement here search bar"),
             Expanded(
               child: ListView.builder(
                 itemCount: mapRoutes.length,

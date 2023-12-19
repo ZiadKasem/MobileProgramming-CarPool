@@ -3,7 +3,7 @@ import 'package:driver_app/Welcome_pages/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:driver_app/reusable/reusable_methods.dart';
-import '../Authentication/authentication_class.dart';
+import 'package:driver_app/Authentication/authentication_class.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -98,21 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 30,),
-                /*TextField(
-                  controller: passwordTextEditingController,
-                  keyboardType: TextInputType.text,
-                  obscureText: true, // to hide password
-                  decoration: const InputDecoration(
-                    labelText: "User Password",
-                    labelStyle: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    fontSize: 15,
-                  ),
-                ),*/
+
             TextField(
               controller: passwordTextEditingController,
               keyboardType: TextInputType.text,
@@ -164,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             builder: (c) => SignUpScreen()));
                   },
                   child: Text(
-                    "Don't have an account?\n Signup Here",
+                    "Don't have an account? Signup Here",
                     style: TextStyle(
                       color: Colors.blue,
                     ),

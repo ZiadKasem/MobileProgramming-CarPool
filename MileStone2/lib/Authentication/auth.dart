@@ -1,7 +1,7 @@
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:flutter/material.dart';
 import 'package:project/home_screen.dart';
-import 'package:project/login_screen.dart';
+import 'package:project/Welcome_pages/login_screen.dart';
 
 import '../Test_file/GlobalVariableForTesting.dart';
 

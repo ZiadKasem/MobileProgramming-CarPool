@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'Test_file/GlobalVariableForTesting.dart';
 import 'reusable/Text_box_component.dart';
 import 'Local Database/My_Database.dart';
 import 'reusable/reusable_methods.dart';
@@ -14,13 +15,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late User currentUser;
+  late var currentUser;
   late DatabaseReference driversRef;
   late DatabaseReference snapshot;
   String? username;
   String? mobile;
 
-  late Database localDatabase;
+  //late Database localDatabase;
   late MyDatabaseClass myDatabaseClass;
 
   ReusableMethods rMethods = new ReusableMethods();
@@ -28,22 +29,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    currentUser = FirebaseAuth.instance.currentUser!;
+    if(TESTMODE == 0){
+      currentUser = FirebaseAuth.instance.currentUser!;
+    }else{
+      print("Assuming we are pointing to FirebaseAuth as Tester");
+      currentUser = "TESTER";
+    }
     driversRef = FirebaseDatabase.instance.reference();
-    snapshot = driversRef.child('Drivers/${currentUser.uid}');
-
+    if(TESTMODE == 0){
+      snapshot = driversRef.child('Drivers/${currentUser.uid}');
+    }else{
+      snapshot = driversRef.child('Drivers/TEST');
+      print("testing");
+    }
     if (username == null) username = "loading";
     if (mobile == null) mobile = "loading";
     rMethods.checkConnectivity(context).then((int result)async {
       await initLocalDatabase();
       if (result ==1) {
-
-
-          print("IF CONDITION OF CONNECTIVITY IS TRUE");
-          snapshot.onValue.listen((event) {
-            readAttributes();
-          });
-
+        print("IF CONDITION OF CONNECTIVITY IS TRUE");
+        snapshot.onValue.listen((event) {
+          readAttributes();
+        });
       } else if (result == 0) {
         // read data of name and phone from database
         print("read data of name and phone from database");
@@ -53,23 +60,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else {
         print("didn't go to read from local");
       }
-
-
-
     });
-
-
-
   }
 
+  Future<void> initLocalDatabase() async {
+    myDatabaseClass = MyDatabaseClass();
+  }
 
   Future<void> readLocalData() async {
     // Read data from the local database
     print("Read data from the local database");
-    List<Map<String, dynamic>> result = await localDatabase.rawQuery('''
-      SELECT * FROM drivers WHERE id = ?
-    ''', [currentUser.uid]);
+    List<Map<String, dynamic>> result;
+    if(TESTMODE == 0){
+      result = await myDatabaseClass.getSpacificUser(currentUser.uid);
+    }else{
+      result = await myDatabaseClass.getSpacificUser("TEST");
 
+    }
     if (result.isNotEmpty) {
       // Data found in the local database
       print("Data found in the local database");
@@ -79,14 +86,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     } else {
       // No data found in the local database
-      print('No local data found for driver ${currentUser.uid}');
+      if(TESTMODE == 0){
+        print('No local data found for user ${currentUser.uid}');
+      }else{
+        print('No local data found for user TEST');
+      }
+
     }
   }
 
-  Future<void> initLocalDatabase() async {
-    myDatabaseClass = MyDatabaseClass();
-    localDatabase = (await myDatabaseClass.mydbcheck()!)!;
-  }
+
 
   Future<void> readAttributes() async {
     DataSnapshot dataSnapshot = await snapshot.get();
@@ -111,10 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> saveUserDataToLocalDatabase(String username, String mobile) async {
-    await localDatabase.rawInsert('''
-      INSERT OR REPLACE INTO drivers (id, name, phone)
-      VALUES (?, ?, ?)
-    ''', [currentUser.uid, username, mobile]);
+    if(TESTMODE==0){
+      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
+    }else{
+      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
+
+    }
+
   }
 
   Future<void> editField(String field) async {
@@ -158,7 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> updateField(String field, String newValue) async {
     try {
-      await driversRef.child('Drivers/${currentUser.uid}').update({field.toLowerCase(): newValue});
+      if(TESTMODE ==0){
+        await driversRef.child('Drivers/${currentUser.uid}').update({field.toLowerCase(): newValue});
+      }else{
+        await driversRef.child('Drivers/TEST').update({field.toLowerCase(): newValue});
+      }
+
     } catch (error) {
       print('Error updating $field: $error');
     }

@@ -150,31 +150,37 @@ class _Add_RideState extends State<Add_Ride> {
               }).toList(),
             )
 
-                : TextField(
+                : Container(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  child: TextField(
               onChanged: (value) {
-                setState(() {
-                  selectedDestination = value;
-                });
+                  setState(() {
+                    selectedDestination = value;
+                  });
               },
               decoration: InputDecoration(
-                hintText: 'Enter destination',
+                  hintText: 'Enter destination',
               ),
             ),
+                ),
 
             SizedBox(height: 20),
             Text(selectedTime == '7:30' ? 'Enter Pickup Point:' : 'Select Pickup Point:'),
 
             selectedTime == '7:30'
-                ? TextField(
-              onChanged: (value) {
-                setState(() {
-                  selectedPickupPoint = value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Enter pickup point',
-              ),
-            )
+                ? Container(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: TextField(
+                    onChanged: (value) {
+                        setState(() {
+                          selectedPickupPoint = value;
+                        });
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Enter pickup point',
+                    ),
+                  ),
+                )
                 : DropdownButton<String>(
               value: selectedPickupPoint,
               onChanged: (String? newValue) {
@@ -190,9 +196,13 @@ class _Add_RideState extends State<Add_Ride> {
               }).toList(),
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: priceController,
-              decoration: InputDecoration(labelText: 'Price'),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+              child: TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Price',),
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(

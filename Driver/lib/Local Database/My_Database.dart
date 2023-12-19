@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:firebase_database/firebase_database.dart';
+import '../Test_file/GlobalVariableForTesting.dart';
 
 class MyDatabaseClass {
   Database? mydb;
@@ -34,41 +34,6 @@ class MyDatabaseClass {
     return mydatabase;
   }
 
-  Future<void> syncDataFromFirebase() async {
-    DatabaseReference reference = FirebaseDatabase.instance.reference();
-
-    // Use child event listener to get updates
-    reference.child('Drivers').onChildAdded.listen((event) {
-      var value = event.snapshot.value;
-
-      // Ensure that the value is not null and is a Map
-      if (value != null && value is Map<dynamic, dynamic>) {
-        Map<String, dynamic> userData = Map<String, dynamic>.from(value);
-        userData['id'] = event.snapshot.key;
-
-        // Insert or update the SQLite database with Firebase data
-        batchInsertOrUpdateUsers([userData]);
-      }
-    });
-  }
-
-  Future<void> batchInsertOrUpdateUsers(List<Map<String, dynamic>> userList) async {
-    Database? temp = await mydbcheck();
-
-    var batch = temp!.batch();
-
-    for (var user in userList) {
-      batch.rawInsert('''
-        INSERT OR REPLACE INTO drivers (id, name, email, phone)
-        VALUES (?, ?, ?, ?)
-      ''', [user['id'], user['name'], user['email'], user['phone']]);
-    }
-
-    await batch.commit();
-
-    // Print table contents after updating
-    await printTableContents();
-  }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     Database? temp = await mydbcheck();
@@ -85,35 +50,31 @@ class MyDatabaseClass {
     });
   }
 
-  Future<void> checking() async {
-    String destinationPath = await getDatabasesPath();
-    String Path = join(destinationPath, "DRIVERROJECTDB");
-    await databaseExists(Path) ? print("Lucky man") : print("maybe next time");
-  }
-
-  Future<void> reseting() async {
-    String destinationPath = await getDatabasesPath();
-    String Path = join(destinationPath, "DRIVERROJECTDB");
-    await deleteDatabase(Path);
-  }
-
-  Future<int> writing(String table, Map<String, dynamic> values) async {
+  Future<List<Map<String, dynamic>>> getSpacificUser(String uid) async {
     Database? temp = await mydbcheck();
-    return temp!.insert(table, values);
+    var response = await temp!.rawQuery('''
+      SELECT * FROM drivers WHERE id = ?
+    ''', [uid]);
+    return response;
   }
 
-  Future<List<Map<String, dynamic>>> reading(String table, String column) async {
+  Future<void> InsertOrUpdateUser(var uid,String username,String mobile) async {
     Database? temp = await mydbcheck();
-    return temp!.query(table, where: '$column = ?', whereArgs: [column]);
-  }
-
-  Future<int> updating(String table, Map<String, dynamic> values, String column) async {
-    Database? temp = await mydbcheck();
-    return temp!.update(table, values, where: '$column = ?', whereArgs: [column]);
-  }
-
-  Future<int> deleting(String table, String column) async {
-    Database? temp = await mydbcheck();
-    return temp!.delete(table, where: '$column = ?', whereArgs: [column]);
+    if(TESTMODE==0){
+      var response = await temp!.rawInsert('''
+      INSERT OR REPLACE INTO drivers (id, name, phone)
+      VALUES (?, ?, ?)
+    ''', [uid, username, mobile]);
+      // Print table contents after updating
+      await printTableContents();
+    }
+    else{
+      var response = await temp!.rawInsert('''
+      INSERT OR REPLACE INTO drivers (id, name, phone)
+      VALUES (?, ?, ?)
+    ''', ["TEST", username, mobile]);
+      // Print table contents after updating
+      await printTableContents();
+    }
   }
 }

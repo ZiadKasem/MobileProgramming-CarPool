@@ -227,6 +227,28 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
 
                     SizedBox(height: 20,),
 
+                    Row(
+                      children: [
+                        Text(
+                          "Status::",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          '${data?["TripStatus"] ?? "N/A"}',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 15 ,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 20,),
+
+
                     acceptedPassengersList.isEmpty ? Text("NO accepted passengers yet"):
                     Expanded(
                       child:SizedBox.expand(

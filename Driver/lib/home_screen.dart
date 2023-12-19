@@ -102,6 +102,7 @@ class _MyScreenState extends State<MyScreen> {
                       Text("Time:${mapRoutes[index]['Time']} ${mapRoutes[index]['Date']}"),
                       Text("To:${mapRoutes[index]['To']}"),
                       Text("Status:${mapRoutes[index]["TripStatus"]}"),
+                      Text("Price:${mapRoutes[index]["price"]}"),
                     ],
                   ),
                   leading: Image.asset(
@@ -173,7 +174,6 @@ class _MyScreenState extends State<MyScreen> {
             ),
           ),
           _buildDrawerItem(context, 'Profile Page', '/Profile_screen'),
-          _buildDrawerItem(context, 'Orders History', '/OrderHistory_screen'),
           _buildDrawerItem(context, 'Logout', '/Login_screen'),
         ],
       ),

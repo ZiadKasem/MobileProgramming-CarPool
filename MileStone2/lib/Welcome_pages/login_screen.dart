@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:project/home_screen.dart';
-import 'package:project/signup_screen.dart';
-import 'Test_file/GlobalVariableForTesting.dart';
-import 'reusable/reusable_methods.dart';
+import 'package:project/Welcome_pages/signup_screen.dart';
+import '../Authentication/authentication_class.dart';
+import '../Test_file/GlobalVariableForTesting.dart';
+import '../reusable/reusable_methods.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -16,6 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
   ReusableMethods rm = ReusableMethods();
+  Authentication_class AUTH = Authentication_class();
+  bool _obscureText = true;
+  bool isLoading = false;
 
   checkIfNetworkIsAvailabe(){
     rm.checkConnectivity(context);
@@ -43,40 +47,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   LogInUser()async{
+    setState(() {
+      isLoading = true; // Set loading to true before starting the login process
+    });
 
-    final User? userFirebase = (
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailTextEditingController.text.trim(),
-          password: passwordTextEditingController.text.trim(),
-        ).catchError((errorMsg){
-          rm.displaySnakBar(errorMsg.toString(), context);
-        })
-    ).user;
-
-    if(!context.mounted)return;
-
-    if(userFirebase != null){
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
-      usersRef.once().then((snap){
-        if(snap.snapshot.value != null){
-
-          if((snap.snapshot.value as Map)["blockStatus"] == "no"){
-            Navigator.pushReplacementNamed(context,'/home_screen');
-          }
-          else{
-            FirebaseAuth.instance.signOut();
-            rm.displaySnakBar("This Account Is Blocked", context);
-          }
-
-        }else{
-          FirebaseAuth.instance.signOut();
-          rm.displaySnakBar("The Account Not Found As User", context);
-
-        }
-
-
+    await AUTH
+        .Log_in(emailTextEditingController.text.trim(),
+        passwordTextEditingController.text.trim(), context)
+        .whenComplete(() {
+      setState(() {
+        isLoading = false; // Set loading to false when the login process is complete
       });
-    }
+    });
+
+
+
 
   }
 
@@ -105,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Text(
-                  "Login",
+                  "Passenger Login",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -130,19 +115,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 30,),
                 //passTextField
-                TextField (
+                TextField(
                   controller: passwordTextEditingController,
                   keyboardType: TextInputType.text,
-                  obscureText: true, // to hide password
-                  decoration: const InputDecoration(
-                      labelText: "User Password",
-                      labelStyle: TextStyle(
-                        fontSize: 14,
-                      )
-                  ),
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    fontSize: 15,
+                  obscureText: _obscureText, // Use the state variable
+                  decoration: InputDecoration(
+                    labelText: "User Password",
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 30,),

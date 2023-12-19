@@ -298,8 +298,8 @@ class _RideTrackingState extends State<RideTracking> {
                                child: ListTile(
                                  title: Column(
                                    children: [
-                                     Text("Name ${acceptedPassengersList[index].toString()}"),//.split(',')[0]}"),
-                                     Text("Mobile ${acceptedPassengersList[index].toString()}"),//.split(',')[0]}"),
+                                     Text("Name ${acceptedPassengersList[index].toString().split(',')[0]}"),
+                                     Text("Mobile ${acceptedPassengersList[index].toString().split(',')[1]}"),
                                    ],
                                  ),
                                  subtitle: Text("Status: Accepted"),
@@ -329,10 +329,10 @@ class _RideTrackingState extends State<RideTracking> {
                               child: ListTile(
                                 title: Column(
                                   children: [
-                                    Text(passengersList[index].toString()),//.split(",")[0]),
+                                    Text(passengersList[index].toString().split(",")[0]),
                                     ],
                                 ),
-                              subtitle: Text(passengersList[index].toString()),//.split(",")[1]),
+                              subtitle: Text(passengersList[index].toString().split(",")[1]),
                               leading: ElevatedButton(// accept button
                                 onPressed: (){
 

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:project/Test_file/GlobalVariableForTesting.dart';
-import 'package:sqflite/sqflite.dart';
 import 'reusable/Text_box_component.dart';
 import 'Local Database/My_Database.dart';
 import 'reusable/reusable_methods.dart';
@@ -20,10 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late DatabaseReference snapshot;
   String? username;
   String? mobile;
-
-  late Database localDatabase;
   late MyDatabaseClass myDatabaseClass;
-
   ReusableMethods rMethods = new ReusableMethods();
 
   @override
@@ -35,7 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("Assuming we are pointing to FirebaseAuth as Tester");
       currentUser = "TESTER";
     }
-
     usersRef = FirebaseDatabase.instance.reference();
     if(TESTMODE == 0){
       snapshot = usersRef.child('users/${currentUser.uid}');
@@ -43,20 +38,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       snapshot = usersRef.child('users/TEST');
       print("testing");
     }
-
-
     if (username == null) username = "loading";
     if (mobile == null) mobile = "loading";
     rMethods.checkConnectivity(context).then((int result)async {
       await initLocalDatabase();
       if (result ==1) {
-
-
           print("IF CONDITION OF CONNECTIVITY IS TRUE");
           snapshot.onValue.listen((event) {
             readAttributes();
           });
-
       } else if (result == 0) {
         // read data of name and phone from database
         print("read data of name and phone from database");
@@ -66,13 +56,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else {
         print("didn't go to read from local");
       }
-
-
-
     });
+  }
 
-
-
+  Future<void> initLocalDatabase() async {
+    myDatabaseClass = MyDatabaseClass();
   }
 
 
@@ -81,16 +69,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     print("Read data from the local database");
     List<Map<String, dynamic>> result;
     if(TESTMODE == 0){
-      result = await localDatabase.rawQuery('''
-      SELECT * FROM users WHERE id = ?
-    ''', [currentUser.uid]);
+      result = await myDatabaseClass.getSpacificUser(currentUser.uid);
     }else{
-      result = await localDatabase.rawQuery('''
-      SELECT * FROM users WHERE id = ?
-    ''', ["TEST"]);
+      result = await myDatabaseClass.getSpacificUser("TEST");
+
     }
-
-
     if (result.isNotEmpty) {
       // Data found in the local database
       print("Data found in the local database");
@@ -109,10 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> initLocalDatabase() async {
-    myDatabaseClass = MyDatabaseClass();
-    localDatabase = (await myDatabaseClass.mydbcheck()!)!;
-  }
+
 
   Future<void> readAttributes() async {
     DataSnapshot dataSnapshot = await snapshot.get();
@@ -139,15 +119,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> saveUserDataToLocalDatabase(String username, String mobile) async {
     if(TESTMODE==0){
-      await localDatabase.rawInsert('''
-      INSERT OR REPLACE INTO users (id, name, phone)
-      VALUES (?, ?, ?)
-    ''', [currentUser.uid, username, mobile]);
+      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
     }else{
-      await localDatabase.rawInsert('''
-      INSERT OR REPLACE INTO users (id, name, phone)
-      VALUES (?, ?, ?)
-    ''', ["TEST", username, mobile]);
+      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
+
     }
 
   }

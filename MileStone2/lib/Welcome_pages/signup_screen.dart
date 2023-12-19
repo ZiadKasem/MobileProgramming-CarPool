@@ -3,8 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:project/home_screen.dart';
-import 'package:project/login_screen.dart';
+import 'package:project/Welcome_pages/login_screen.dart';
 import 'package:project/reusable/reusable_methods.dart';
+
+import '../Authentication/authentication_class.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,7 +20,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
+  TextEditingController passwordConfirmationTextEditingController = TextEditingController();
   ReusableMethods rMethods = ReusableMethods();
+  Authentication_class AUTH = Authentication_class();
+  bool isLoading = false; // Add a loading indicator variable
 
   checkIfNetworkIsAvailabe(){
     rMethods.checkConnectivity(context);
@@ -29,14 +34,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if(nameTextEditingController.text.trim().length<3){
       rMethods.displaySnakBar("Name Must Be Atleast 4 charachters", context);
     }
+    else if(phoneTextEditingController.text.trim().length<11){
+      rMethods.displaySnakBar("Phone Number Must Be Atleast 11 Digets", context);
+    }
     else if(!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")){// try to find method to check last few digits
       rMethods.displaySnakBar("Please SignUp with ASU Domain Email", context);
+    }
+    else if(emailTextEditingController.text == "test@eng.asu.edu.eg"){// try to find method to check last few digits
+      rMethods.displaySnakBar("you can't sign in with this mail", context);
     }
     else if(passwordTextEditingController.text.trim().length<6){
       rMethods.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
     }
-    else if(phoneTextEditingController.text.trim().length<11){
-      rMethods.displaySnakBar("Phone Number Must Be Atleast 11 Digets", context);
+    else if(passwordConfirmationTextEditingController.text.trim() != passwordTextEditingController.text.trim()) {
+      rMethods.displaySnakBar("Confirm password is not the same", context);
     }
     else{
       registerNewUser();
@@ -44,47 +55,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   }
 
-  registerNewUser()async{
-    final User? userFirebase = (
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailTextEditingController.text.trim(),
-        password: passwordTextEditingController.text.trim(),
-    ).catchError((errorMsg){
-      rMethods.displaySnakBar(errorMsg.toString(), context);
-    })
-    ).user;
-    if(!context.mounted)return;
-    var currentUser = FirebaseAuth.instance.currentUser!;
-    if(currentUser.email == "test@eng.asu.edu.eg"){
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child("TEST");
-      Map userDataMap = {
-        "name":nameTextEditingController.text.trim(),
-        "email":emailTextEditingController.text.trim(),
-        "phone":phoneTextEditingController.text.trim(),
-        "id":"TEST",
-        "Type":"USER",
-        "blockStatus":"no",
-      };
-      usersRef.set(userDataMap);
 
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
 
-    }
-    else{
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
-      Map userDataMap = {
-        "name":nameTextEditingController.text.trim(),
-        "email":emailTextEditingController.text.trim(),
-        "phone":phoneTextEditingController.text.trim(),
-        "id":userFirebase.uid,
-        "Type":"USER",
-        "blockStatus":"no",
-      };
-      usersRef.set(userDataMap);
+  registerNewUser() async {
+    setState(() {
+      isLoading = true; // Set loading to true before starting the login process
+    });
 
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
-    }
 
+    await AUTH.Sign_up(emailTextEditingController.text.trim(),
+        passwordTextEditingController.text.trim(),
+        nameTextEditingController.text.trim(),
+        phoneTextEditingController.text.trim(),
+        context).whenComplete(() {
+      setState(() {
+        isLoading = false; // Set loading to false when the login process is complete
+      });
+    });
 
   }
   
@@ -101,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   "assets/images/car-sharing.png",
                   width: 170,
                 ),
-                SizedBox(height: 25,),
+                SizedBox(height: 30,),
 
 
                 Text(
@@ -112,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Text(
-                  "Signup",
+                  "Passenger Signup",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -134,7 +121,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
+                //phone number
+                TextField (
+                  controller: phoneTextEditingController,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                      labelText: "User Phone number",
+                      labelStyle: TextStyle(
+                        fontSize: 14,
+                      )
+                  ),
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 //emailTextField
                 TextField(
                   controller: emailTextEditingController,
@@ -150,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
                 //passTextField
                 TextField (
                   controller: passwordTextEditingController,
@@ -167,14 +170,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
-                //phone number
+                SizedBox(height: 5,),
+                //passTextField
                 TextField (
-                  controller: phoneTextEditingController,
-                  keyboardType: TextInputType.phone,
+                  controller: passwordConfirmationTextEditingController,
+                  keyboardType: TextInputType.text,
                   obscureText: true, // to hide password
                   decoration: const InputDecoration(
-                      labelText: "User Phone number",
+                      labelText: "Confirm Password",
                       labelStyle: TextStyle(
                         fontSize: 14,
                       )
@@ -184,7 +187,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 5,),
+
                 //signup button
 
                 ElevatedButton(

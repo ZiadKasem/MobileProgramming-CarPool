@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:project/Test_file/GlobalVariableForTesting.dart';
 import 'reusable/reusable_methods.dart';
 void main() {
   runApp(MyScreen());
@@ -35,6 +36,7 @@ class _MyScreenState extends State<MyScreen> {
     print(currentDate);
     print(currentTime);
     print(tommorowDate);
+    print(TESTMODE);
 
 
   }
@@ -179,7 +181,7 @@ class _MyScreenState extends State<MyScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Text("will implement here search bar"),
+
             Expanded(
               child: ListView.builder(
                 itemCount: mapRoutes.length,

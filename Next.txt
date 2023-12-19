@@ -1,10 +1,11 @@
 -------------------------------------------------------------------------
 Future Improvements							-
-= authentication in separate file in Passenger				-
-= Modular file for profile						-
+= authentication in separate file in Passenger			Done	-
+= Modular file for profile					Done	-
+= add test account to driver						-
+= make bypass time							-
 = refresh when drag page down						-
 = add driver mobile to node route					-
-= add test account to driver
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -65,8 +66,8 @@ Phase6:									-
 			-test account				Done	-
 -------------------------------------------------------------------------
 Phase7									-
-			-Testing					-
 			-improvements					-
+			-Testing					-
 			-Report						-
 -------------------------------------------------------------------------
 
