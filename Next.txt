@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------
 Future Improvements							-
-= authentication in separate file					-
+= authentication in separate file in Passenger				-
 = Modular file for profile						-
 = refresh when drag page down						-
 = add driver mobile to node route					-
@@ -62,22 +62,11 @@ Phase6:									-
 			-Profile Driver				Done	-
 			-remove upcomming rides			Done	-
 			-test account				Done	-
-			-improvements					-
 -------------------------------------------------------------------------
-
-
-
-
-
-
-
-----------------------QUESTIONS----------------------------------
--Test Account:							-
--								-
--	Profile ?						-
--	Features {reserve trip/track trip/profile}		-
--Idea: create manual entity for it in the realtime database	-
------------------------------------------------------------------
-
+Phase7									-
+			-Testing					-
+			-improvements					-
+			-Report						-
+-------------------------------------------------------------------------
 
 

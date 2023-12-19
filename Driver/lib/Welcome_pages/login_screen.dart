@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:driver_app/Welcome_pages/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:driver_app/reusable/reusable_methods.dart';
-
 import '../Authentication/authentication_class.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,37 +17,43 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
   ReusableMethods rMethods = ReusableMethods();
   Authentication_class AUTH = Authentication_class();
+  bool isLoading = false; // Add a loading indicator variable
+  bool _obscureText = true;
 
-  checkIfNetworkIsAvailabe(){
+  checkIfNetworkIsAvailable() {
     rMethods.checkConnectivity(context);
     logInFormValidation();
   }
 
-  logInFormValidation(){
-    if(!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")){// try to find method to check last few digits
+  logInFormValidation() {
+    if (!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")) {
       rMethods.displaySnakBar("Please SignUp with ASU Domain Email", context);
-    }
-    else if(passwordTextEditingController.text.trim().length<6){
-      rMethods.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
-    }
-    else{
-      if(emailTextEditingController.text == "test@eng.asu.edu.eg"){// used to bypass the authentication --for the aid of testing
-        Navigator.pushReplacementNamed(context,'/home_screen');
-      }
-      else
+    } else if (passwordTextEditingController.text.trim().length < 6) {
+      rMethods.displaySnakBar(
+          "Password Must Be At Least 6 Characters", context);
+    } else {
+      if (emailTextEditingController.text == "test@eng.asu.edu.eg") {
+        Navigator.pushReplacementNamed(context, '/home_screen');
+      } else {
         LogInUser();
+      }
     }
-
   }
 
-  LogInUser()async{
+  LogInUser() async {
+    setState(() {
+      isLoading = true; // Set loading to true before starting the login process
+    });
 
-    AUTH.Log_in(emailTextEditingController.text.trim(),
-        passwordTextEditingController.text.trim(),
-        context);
-
+    await AUTH
+        .Log_in(emailTextEditingController.text.trim(),
+        passwordTextEditingController.text.trim(), context)
+        .whenComplete(() {
+      setState(() {
+        isLoading = false; // Set loading to false when the login process is complete
+      });
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,33 +69,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 170,
                 ),
                 SizedBox(height: 25,),
-
-
                 Text(
                   "Welcome to Ainshams CarPool",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  "Login",
+                  "Driver: Login",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
-
-                //emailTextField
                 TextField(
                   controller: emailTextEditingController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                      labelText: "User Email",
-                      labelStyle: TextStyle(
-                        fontSize: 14,
-                      )
+                    labelText: "User Email",
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                   style: const TextStyle(
                     color: Colors.blue,
@@ -98,45 +98,73 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 30,),
-                //passTextField
-                TextField (
+                /*TextField(
                   controller: passwordTextEditingController,
                   keyboardType: TextInputType.text,
                   obscureText: true, // to hide password
                   decoration: const InputDecoration(
-                      labelText: "User Password",
-                      labelStyle: TextStyle(
-                        fontSize: 14,
-                      )
+                    labelText: "User Password",
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                   style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 15,
                   ),
+                ),*/
+            TextField(
+              controller: passwordTextEditingController,
+              keyboardType: TextInputType.text,
+              obscureText: _obscureText, // Use the state variable
+              decoration: InputDecoration(
+                labelText: "User Password",
+                labelStyle: TextStyle(
+                  fontSize: 14,
                 ),
-                SizedBox(height: 30,),
-                //Login button
-                ElevatedButton(
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white,),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Colors.blue,
                   ),
-                  onPressed:(){
-                    checkIfNetworkIsAvailabe();
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
+                SizedBox(height: 30,),
+                ElevatedButton(
+                  child: isLoading
+                      ? CircularProgressIndicator()
+                      : Text(
+                    "Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    checkIfNetworkIsAvailable();
                   },
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(horizontal: 80,)
+                    backgroundColor: Colors.blue,
+                    padding: EdgeInsets.symmetric(horizontal: 80),
                   ),
                 ),
-                //having an account navigate to login Screen
                 SizedBox(height: 30,),
                 TextButton(
-                  onPressed: (){
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>SignUpScreen()));
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => SignUpScreen()));
                   },
                   child: Text(
-                    "Don\'t have an account? Signup Here",
+                    "Don't have an account?\n Signup Here",
                     style: TextStyle(
                       color: Colors.blue,
                     ),
@@ -147,10 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-
-
-
-
-    );;
+    );
   }
 }
