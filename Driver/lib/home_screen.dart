@@ -2,6 +2,8 @@ import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'Test_file/GlobalVariableForTesting.dart';
 void main() {
   runApp(MyScreen());
 }
@@ -25,11 +27,20 @@ class _MyScreenState extends State<MyScreen> {
     //routeref = FirebaseDatabase.instance.reference().child("routes");
     routeref = FirebaseDatabase.instance.ref("routes");
     _setupDataListener();
-    currentDriverID = FirebaseAuth.instance.currentUser?.uid;
+
+    if(TESTMODE == 0){
+      currentDriverID = FirebaseAuth.instance.currentUser?.uid;
+    }
+    else{
+      currentDriverID = "TEST";
+    }
+
+
     print(currentDriverID);
 
     currentdate = rm.getFormattedDateTimeWithoutSeconds().split(" ")[0];
     currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
+    print(TESTMODE);
   }
 
   void _setupDataListener() {
@@ -41,6 +52,7 @@ class _MyScreenState extends State<MyScreen> {
         var data = (event.snapshot.value as Map<dynamic, dynamic>)?.entries;
 
         if (data != null) {
+
           setState(() {
             mapRoutes = data
                 .where((entry)=>entry.value['DriverID'] == currentDriverID)
@@ -57,6 +69,8 @@ class _MyScreenState extends State<MyScreen> {
             }))
                 .toList();
           });
+
+
         }
       } else {
         print("Snapshot value is null");

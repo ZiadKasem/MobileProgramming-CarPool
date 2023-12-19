@@ -39,6 +39,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     else if(!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")){// try to find method to check last few digits
       rMethods.displaySnakBar("Please SignUp with ASU Domain Email", context);
     }
+    else if(emailTextEditingController.text == "test@eng.asu.edu.eg"){// try to find method to check last few digits
+      rMethods.displaySnakBar("you can't sign in with this mail", context);
+    }
     else if(passwordTextEditingController.text.trim().length<6){
       rMethods.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
     }

@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:driver_app/reusable/reusable_methods.dart';
 import 'package:driver_app/Authentication/authentication_class.dart';
 
+import '../Test_file/GlobalVariableForTesting.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -33,8 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
           "Password Must Be At Least 6 Characters", context);
     } else {
       if (emailTextEditingController.text == "test@eng.asu.edu.eg") {
+        TESTMODE = 1;
         Navigator.pushReplacementNamed(context, '/home_screen');
       } else {
+        TESTMODE = 0;
+        print("TESTMODE = 0");
         LogInUser();
       }
     }

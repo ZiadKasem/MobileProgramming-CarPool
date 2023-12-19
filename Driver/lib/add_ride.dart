@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
+import 'Test_file/GlobalVariableForTesting.dart';
 class Add_Ride extends StatefulWidget {
   const Add_Ride({super.key});
 
@@ -12,9 +14,6 @@ class _Add_RideState extends State<Add_Ride> {
   late DatabaseReference _databaseReference = FirebaseDatabase.instance.reference().child("routes");
 
   DatabaseReference ref = FirebaseDatabase.instance.ref();
-  //TextEditingController fromController = TextEditingController();
-  //TextEditingController toController = TextEditingController();
-  //TextEditingController timeController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
 
@@ -26,11 +25,16 @@ class _Add_RideState extends State<Add_Ride> {
 
 
   void _addRoute()async {
-    //String from = fromController.text.trim();
-    //String to = toController.text.trim();
-    //String time = timeController.text.trim();
     String price = priceController.text.trim();
-    String? currentDriverid = FirebaseAuth.instance.currentUser?.uid.toString();
+    String? currentDriverid;
+    if(TESTMODE==0){
+      currentDriverid = FirebaseAuth.instance.currentUser?.uid.toString();
+    }
+    else{
+      currentDriverid = "TEST";
+    }
+
+
     String driverName ='';
 
     final snapshot = await ref.child('Drivers/$currentDriverid/name').get();

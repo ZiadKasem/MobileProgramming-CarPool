@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:driver_app/home_screen.dart';
 import 'package:driver_app/reusable/reusable_methods.dart';
 
+import '../Test_file/GlobalVariableForTesting.dart';
+
 class Authentication_class{
   ReusableMethods rMethods = ReusableMethods();
 
@@ -23,19 +25,44 @@ class Authentication_class{
         })
     ).user;
     if(!context.mounted)return 0;
-    DatabaseReference DriverRef = FirebaseDatabase.instance.ref().child("Drivers").child(userFirebase!.uid);
-    Map driverDataMap = {
-      "name":nameTextEditingController,
-      "email":emailTextEditingController,
-      "phone":phoneTextEditingController,
-      "id":userFirebase.uid,
-      "Type":"Driver",
-      "blockStatus":"no",
-    };
-    DriverRef.set(driverDataMap);
 
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
-    return 1;
+    if(emailTextEditingController.trim() != "test@eng.asu.edu.eg"){
+      DatabaseReference DriverRef = FirebaseDatabase.instance.ref().child("Drivers").child(userFirebase!.uid);
+      Map driverDataMap = {
+        "name":nameTextEditingController,
+        "email":emailTextEditingController,
+        "phone":phoneTextEditingController,
+        "id":userFirebase.uid,
+        "Type":"Driver",
+        "blockStatus":"no",
+      };
+      DriverRef.set(driverDataMap);
+
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+      TESTMODE =0;
+      return 1;
+    }
+    else{
+      print("saving Test Node in Database");
+      DatabaseReference DriverRef = FirebaseDatabase.instance.ref().child("Drivers").child("TEST");
+      Map driverDataMap = {
+        "name":nameTextEditingController,
+        "email":emailTextEditingController,
+        "phone":phoneTextEditingController,
+        "id":"TEST",
+        "Type":"Driver",
+        "blockStatus":"no",
+      };
+      DriverRef.set(driverDataMap);
+
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (c)=>MyScreen()));
+      TESTMODE =1;
+      return 1;
+    }
+
+
+
+
 
   }
 

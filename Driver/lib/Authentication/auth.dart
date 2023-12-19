@@ -1,6 +1,7 @@
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:flutter/material.dart';
 
+import '../Test_file/GlobalVariableForTesting.dart';
 import '../Welcome_pages/login_screen.dart';
 import '../home_screen.dart';
 
@@ -16,7 +17,8 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context,snapshot){
           //if user loggedin
-            if(snapshot.hasData){
+            if(snapshot.hasData && TESTMODE == 0){
+              print("TESTMODE EQUAL 0");
               return  MyScreen();
             }
             else{

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:project/Test_file/GlobalVariableForTesting.dart';
 import 'package:sqflite/sqflite.dart';
-import 'Test_file/GlobalVariableForTesting.dart';
 import 'reusable/Text_box_component.dart';
 import 'Local Database/My_Database.dart';
 import 'reusable/reusable_methods.dart';
@@ -16,12 +16,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late var currentUser;
-  late DatabaseReference driversRef;
+  late DatabaseReference usersRef;
   late DatabaseReference snapshot;
   String? username;
   String? mobile;
 
-  //late Database localDatabase;
+  late Database localDatabase;
   late MyDatabaseClass myDatabaseClass;
 
   ReusableMethods rMethods = new ReusableMethods();
@@ -35,22 +35,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("Assuming we are pointing to FirebaseAuth as Tester");
       currentUser = "TESTER";
     }
-    driversRef = FirebaseDatabase.instance.reference();
+
+    usersRef = FirebaseDatabase.instance.reference();
     if(TESTMODE == 0){
-      snapshot = driversRef.child('Drivers/${currentUser.uid}');
+      snapshot = usersRef.child('users/${currentUser.uid}');
     }else{
-      snapshot = driversRef.child('Drivers/TEST');
+      snapshot = usersRef.child('users/TEST');
       print("testing");
     }
+
+
     if (username == null) username = "loading";
     if (mobile == null) mobile = "loading";
     rMethods.checkConnectivity(context).then((int result)async {
       await initLocalDatabase();
       if (result ==1) {
-        print("IF CONDITION OF CONNECTIVITY IS TRUE");
-        snapshot.onValue.listen((event) {
-          readAttributes();
-        });
+
+
+          print("IF CONDITION OF CONNECTIVITY IS TRUE");
+          snapshot.onValue.listen((event) {
+            readAttributes();
+          });
+
       } else if (result == 0) {
         // read data of name and phone from database
         print("read data of name and phone from database");
@@ -65,18 +71,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> initLocalDatabase() async {
     myDatabaseClass = MyDatabaseClass();
+    localDatabase = (await myDatabaseClass.mydbcheck()!)!;
   }
+
 
   Future<void> readLocalData() async {
     // Read data from the local database
     print("Read data from the local database");
     List<Map<String, dynamic>> result;
     if(TESTMODE == 0){
-      result = await myDatabaseClass.getSpacificUser(currentUser.uid);
+      result = await localDatabase.rawQuery('''
+      SELECT * FROM users WHERE id = ?
+    ''', [currentUser.uid]);
     }else{
-      result = await myDatabaseClass.getSpacificUser("TEST");
-
+      result = await localDatabase.rawQuery('''
+      SELECT * FROM users WHERE id = ?
+    ''', ["TEST"]);
     }
+
+
     if (result.isNotEmpty) {
       // Data found in the local database
       print("Data found in the local database");
@@ -99,7 +112,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> readAttributes() async {
     DataSnapshot dataSnapshot = await snapshot.get();
-
+    print("printing datasnapshot");
+    print(dataSnapshot);
     if (dataSnapshot.value != null && dataSnapshot.value is Map<dynamic, dynamic>) {
       Map<dynamic, dynamic> dataMap = dataSnapshot.value as Map<dynamic, dynamic>;
 
@@ -121,10 +135,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> saveUserDataToLocalDatabase(String username, String mobile) async {
     if(TESTMODE==0){
-      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
+      await localDatabase.rawInsert('''
+      INSERT OR REPLACE INTO users (id, name, phone)
+      VALUES (?, ?, ?)
+    ''', [currentUser.uid, username, mobile]);
     }else{
-      await myDatabaseClass.InsertOrUpdateUser("TEST", username, mobile);
-
+      await localDatabase.rawInsert('''
+      INSERT OR REPLACE INTO users (id, name, phone)
+      VALUES (?, ?, ?)
+    ''', ["TEST", username, mobile]);
     }
 
   }
@@ -171,9 +190,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> updateField(String field, String newValue) async {
     try {
       if(TESTMODE ==0){
-        await driversRef.child('Drivers/${currentUser.uid}').update({field.toLowerCase(): newValue});
+        await usersRef.child('users/${currentUser.uid}').update({field.toLowerCase(): newValue});
       }else{
-        await driversRef.child('Drivers/TEST').update({field.toLowerCase(): newValue});
+        await usersRef.child('users/TEST').update({field.toLowerCase(): newValue});
       }
 
     } catch (error) {
@@ -203,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.blue),
           )
-              :Text(
+          :Text(
             "test@eng.asu.edu.eg",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.blue),

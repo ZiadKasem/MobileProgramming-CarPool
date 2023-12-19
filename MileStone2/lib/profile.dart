@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if(TESTMODE==0){
       await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
     }else{
-      await myDatabaseClass.InsertOrUpdateUser(currentUser.uid, username, mobile);
+      await myDatabaseClass.InsertOrUpdateUser("TEST", username, mobile);
 
     }
 

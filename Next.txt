@@ -2,7 +2,7 @@
 Future Improvements							-
 = authentication in separate file in Passenger			Done	-
 = Modular file for profile					Done	-
-= add test account to driver						-
+= add test account to driver					Done	-
 = make bypass time							-
 = refresh when drag page down						-
 = add driver mobile to node route					-

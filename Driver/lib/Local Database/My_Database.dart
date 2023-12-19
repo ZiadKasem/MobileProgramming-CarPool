@@ -61,6 +61,7 @@ class MyDatabaseClass {
   Future<void> InsertOrUpdateUser(var uid,String username,String mobile) async {
     Database? temp = await mydbcheck();
     if(TESTMODE==0){
+      print("not storing tester values in local database");
       var response = await temp!.rawInsert('''
       INSERT OR REPLACE INTO drivers (id, name, phone)
       VALUES (?, ?, ?)
@@ -69,6 +70,7 @@ class MyDatabaseClass {
       await printTableContents();
     }
     else{
+      print("storing tester values in local database");
       var response = await temp!.rawInsert('''
       INSERT OR REPLACE INTO drivers (id, name, phone)
       VALUES (?, ?, ?)
