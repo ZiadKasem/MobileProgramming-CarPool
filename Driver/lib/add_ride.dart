@@ -36,10 +36,16 @@ class _Add_RideState extends State<Add_Ride> {
 
 
     String driverName ='';
-
-    final snapshot = await ref.child('Drivers/$currentDriverid/name').get();
-    if (snapshot.exists) {
-      driverName = snapshot.value.toString() ;
+    final driverNameSnapshot = await ref.child('Drivers/$currentDriverid/name').get();
+    if (driverNameSnapshot.exists) {
+      driverName = driverNameSnapshot.value.toString() ;
+    } else {
+      print('No data available.');
+    }
+    String drivermobile ='';
+    final drivermobileSnapshot = await ref.child('Drivers/$currentDriverid/phone').get();
+    if (drivermobileSnapshot.exists) {
+      drivermobile = drivermobileSnapshot.value.toString() ;
     } else {
       print('No data available.');
     }
@@ -56,6 +62,7 @@ class _Add_RideState extends State<Add_Ride> {
         'Time' : selectedTime,
         'price': price,
         'DriverName': driverName,
+        'DriverMobile':drivermobile,
         'TripStatus':"Availabe",
         'RoutID':routeID,
         'numberOfPassengers':'0',

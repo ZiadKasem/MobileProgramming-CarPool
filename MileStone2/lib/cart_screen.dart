@@ -99,6 +99,28 @@ class _CartScreenState extends State<CartScreen> {
                     Row(
                       children: [
                         Text(
+                          "Rider Mobile:",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20 ,
+                          ),
+                        ),
+                        Text(
+                          '${data?["DriverMobile"] ?? "N/A"}',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20 ,
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Row(
+                      children: [
+                        Text(
                           "PickUp point:",
                           style: TextStyle(
                             color: Colors.blue,

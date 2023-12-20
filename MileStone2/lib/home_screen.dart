@@ -283,6 +283,7 @@ class _MyScreenState extends State<MyScreen> {
                             Text("Time:${mapRoutes[index]['Time']} ${mapRoutes[index]['Date']}"),
                             Text("To:${mapRoutes[index]['To']}"),
                             Text("Status:${mapRoutes[index]["TripStatus"]}"),
+                            Text("Price:${mapRoutes[index]["price"]}"),
 
                           ],
                         ),

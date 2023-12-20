@@ -4,7 +4,7 @@ Future Improvements							-
 = Modular file for profile					Done	-
 = add test account to driver					Done	-
 = make bypass time						Done	-
-= add driver mobile to node route					-
+= add driver mobile to node route				Done	-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-
 	Keeplogin						Done	-
@@ -65,8 +65,7 @@ Phase6:									-
 			-test account				Done	-
 -------------------------------------------------------------------------
 Phase7									-
-			-improvements					-
-			-Testing					-
+			-improvements				Done	-
 			-Report						-
 -------------------------------------------------------------------------
 

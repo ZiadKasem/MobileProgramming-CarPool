@@ -138,6 +138,27 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                     ),
 
                     SizedBox(height: 20,),
+                    Row(
+                      children: [
+                        Text(
+                          "Rider Mobile:",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 15 ,
+                          ),
+                        ),
+                        Text(
+                          '${data?["DriverMobile"] ?? "N/A"}',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 15 ,
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                    SizedBox(height: 20,),
 
                     Row(
                       children: [
