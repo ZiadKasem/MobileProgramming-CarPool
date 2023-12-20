@@ -3,8 +3,7 @@ Future Improvements							-
 = authentication in separate file in Passenger			Done	-
 = Modular file for profile					Done	-
 = add test account to driver					Done	-
-= make bypass time							-
-= refresh when drag page down						-
+= make bypass time						Done	-
 = add driver mobile to node route					-
 -------------------------------------------------------------------------
 phase1:	(Profile Page)							-

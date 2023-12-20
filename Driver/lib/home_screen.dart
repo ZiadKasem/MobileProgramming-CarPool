@@ -23,12 +23,13 @@ class _MyScreenState extends State<MyScreen> {
   late String currentTime;
 
 
-  bool TWENTY_ONE_THERTY_FLAG = false;
-  bool TWENTY_TWO_THERTY_FLAG = false;
-  bool TWELVE_THERTY_FLAG = false;
-  bool THIRTEEN_THERTY_FLAG = false;
-  bool ONE_THERTY_FLAG = false;
+  bool TWENTY_THREE_FIFTEEN_FLAG = false;
+  bool TWENTY_THREE_FOURTYFIVE_FLAG = false;
+  bool SIXTEEN_FIFTEEN_FLAG = false;
+  bool SIXTEEN_FOURTYFIVE_FLAG = false;
+  bool ONE_THIRTY_FLAG = false;
   bool DEFAULT_FLAG = true;
+
 
   void initState() {
     super.initState();
@@ -89,11 +90,11 @@ class _MyScreenState extends State<MyScreen> {
 
 
   printTimeFlags(){
-    print("TWENTY_ONE_THERTY_FLAG:${TWENTY_ONE_THERTY_FLAG}");
-    print("TWENTY_TWO_THERTY_FLAG:${TWENTY_TWO_THERTY_FLAG}");
-    print("TWELVE_THERTY_FLAG:${TWELVE_THERTY_FLAG}");
-    print("THIRTEEN_THERTY_FLAG:${THIRTEEN_THERTY_FLAG}");
-    print("ONE_THERTY_FLAG:${ONE_THERTY_FLAG}");
+    print("TWENTY_THREE_FIFTEEN_FLAG:${TWENTY_THREE_FIFTEEN_FLAG}");
+    print("TWENTY_THREE_FOURTYFIVE_FLAG:${TWENTY_THREE_FOURTYFIVE_FLAG}");
+    print("SIXTEEN_FIFTEEN_FLAG:${SIXTEEN_FIFTEEN_FLAG}");
+    print("SIXTEEN_FOURTYFIVE_FLAG:${SIXTEEN_FOURTYFIVE_FLAG}");
+    print("ONE_THERTY_FLAG:${ONE_THIRTY_FLAG}");
     print("DEFAULT:${DEFAULT_FLAG}");
     _setupDataListener();
   }
@@ -121,77 +122,48 @@ class _MyScreenState extends State<MyScreen> {
               children: [
                 ElevatedButton(
                   onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = true;
-                    TWENTY_TWO_THERTY_FLAG = false;
-                    TWELVE_THERTY_FLAG = false;
-                    THIRTEEN_THERTY_FLAG = false;
-                    ONE_THERTY_FLAG = false;
+                    TWENTY_THREE_FIFTEEN_FLAG = false;
+                    TWENTY_THREE_FOURTYFIVE_FLAG = true;
+                    SIXTEEN_FIFTEEN_FLAG = false;
+                    SIXTEEN_FOURTYFIVE_FLAG = false;
+                    ONE_THIRTY_FLAG = false;
                     DEFAULT_FLAG = false;
                     printTimeFlags();
                   },
-                  child:Text("21:30",style: TextStyle(fontSize: 15),),
+                  child:Text("23:45",style: TextStyle(fontSize: 15),),
                 ),
                 ElevatedButton(
                   onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = false;
-                    TWENTY_TWO_THERTY_FLAG = true;
-                    TWELVE_THERTY_FLAG = false;
-                    THIRTEEN_THERTY_FLAG = false;
-                    ONE_THERTY_FLAG = false;
+                    TWENTY_THREE_FIFTEEN_FLAG = false;
+                    TWENTY_THREE_FOURTYFIVE_FLAG = false;
+                    SIXTEEN_FIFTEEN_FLAG = false;
+                    SIXTEEN_FOURTYFIVE_FLAG = true;
+                    ONE_THIRTY_FLAG = false;
                     DEFAULT_FLAG = false;
                     printTimeFlags();
                   },
-                  child:Text("22:30",style: TextStyle(fontSize: 15),),
+                  child:Text("16:45",style: TextStyle(fontSize: 15),),
                 ),
                 ElevatedButton(
                   onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = false;
-                    TWENTY_TWO_THERTY_FLAG = false;
-                    TWELVE_THERTY_FLAG = true;
-                    THIRTEEN_THERTY_FLAG = false;
-                    ONE_THERTY_FLAG = false;
-                    DEFAULT_FLAG = false;
-                    printTimeFlags();
-                  },
-                  child:Text("12:30",style: TextStyle(fontSize: 15),),
-                ),
-
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = false;
-                    TWENTY_TWO_THERTY_FLAG = false;
-                    TWELVE_THERTY_FLAG = false;
-                    THIRTEEN_THERTY_FLAG = true;
-                    ONE_THERTY_FLAG = false;
-                    DEFAULT_FLAG = false;
-                    printTimeFlags();
-                  },
-                  child:Text("13:30",style: TextStyle(fontSize: 15),),
-                ),
-                ElevatedButton(
-                  onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = false;
-                    TWENTY_TWO_THERTY_FLAG = false;
-                    TWELVE_THERTY_FLAG = false;
-                    THIRTEEN_THERTY_FLAG = false;
-                    ONE_THERTY_FLAG = true;
+                    TWENTY_THREE_FIFTEEN_FLAG = false;
+                    TWENTY_THREE_FOURTYFIVE_FLAG = false;
+                    SIXTEEN_FIFTEEN_FLAG = false;
+                    SIXTEEN_FOURTYFIVE_FLAG = false;
+                    ONE_THIRTY_FLAG = true;
                     DEFAULT_FLAG = false;
                     printTimeFlags();
                   },
                   child:Text("1:30",style: TextStyle(fontSize: 15),),
+
                 ),
                 ElevatedButton(
                   onPressed: (){
-                    TWENTY_ONE_THERTY_FLAG = false;
-                    TWENTY_TWO_THERTY_FLAG = false;
-                    TWELVE_THERTY_FLAG = false;
-                    THIRTEEN_THERTY_FLAG = false;
-                    ONE_THERTY_FLAG = false;
+                    TWENTY_THREE_FIFTEEN_FLAG = false;
+                    TWENTY_THREE_FOURTYFIVE_FLAG = false;
+                    SIXTEEN_FIFTEEN_FLAG = false;
+                    SIXTEEN_FOURTYFIVE_FLAG = false;
+                    ONE_THIRTY_FLAG = false;
                     DEFAULT_FLAG = true;
                     printTimeFlags();
                   },
@@ -200,11 +172,10 @@ class _MyScreenState extends State<MyScreen> {
                 ),
               ],
             ),
-            TWENTY_ONE_THERTY_FLAG?Text("Time is 21:30"):
-            TWENTY_TWO_THERTY_FLAG?Text("Time is 22:30"):
-            TWELVE_THERTY_FLAG?Text("Time is 12:30"):
-            THIRTEEN_THERTY_FLAG?Text("Time is 13:30"):
-            ONE_THERTY_FLAG?Text("Time is 1:30"):
+
+            TWENTY_THREE_FOURTYFIVE_FLAG?Text("Time is 23:45"):
+            SIXTEEN_FOURTYFIVE_FLAG?Text("Time is 16:45"):
+            ONE_THIRTY_FLAG?Text("Time is 1:30"):
             Text("default Time"),
 
             Expanded(
@@ -236,8 +207,9 @@ class _MyScreenState extends State<MyScreen> {
                         ),
                         onTap: () async{
 
-                          if(currentTime.compareTo("23:29")>0 && mapRoutes[index]["Time"] == "7:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) <0 && mapRoutes[index]["Passengers"]!="null"){
-                            print("the ride in the next day but the clock is after 11:30 PM");
+                          if((currentTime.compareTo("23:29")>0 && mapRoutes[index]["Time"] == "7:30"&& currentdate.compareTo(mapRoutes[index]["Date"].toString()) <0
+                              && mapRoutes[index]["Passengers"]!="null" && DEFAULT_FLAG) || (TWENTY_THREE_FOURTYFIVE_FLAG && mapRoutes[index]["Passengers"]!="null")){
+                            print("the ride in the next day but the clock is after 11:30 PM and before midnight");
                             var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
                             Map<String,dynamic> myMap={partTwo:partTwo};
                             await routeref.child(mapRoutes[index]["RoutID"]!).child("rejectedPassengers").update(myMap);
@@ -246,9 +218,9 @@ class _MyScreenState extends State<MyScreen> {
 
                             });
                           }
-                          print(mapRoutes[index]["Passengers"]?.isNotEmpty);
-                          print(mapRoutes[index]["Passengers"]);
-                          if(currentdate.compareTo(mapRoutes[index]["Date"].toString()) >= 0 && mapRoutes[index]["Passengers"].toString()!="null"){
+
+                          if((currentdate.compareTo(mapRoutes[index]["Date"].toString()) >= 0
+                              && mapRoutes[index]["Passengers"].toString()!="null" && DEFAULT_FLAG)||(ONE_THIRTY_FLAG && mapRoutes[index]["Passengers"]!="null")){
                             print("the ride is 7:30 and we are after 12AM in the Same day or the ride is in the past");
                             print(mapRoutes[index]["Passengers"]);
                             var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
@@ -259,7 +231,9 @@ class _MyScreenState extends State<MyScreen> {
 
                             });
                           }
-                          if(currentTime.compareTo("16:29")>0 && mapRoutes[index]["Time"] == "17:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) == 0 && mapRoutes[index]["Passengers"]!="null"){
+
+                          if((currentTime.compareTo("16:29")>0 && mapRoutes[index]["Time"] == "17:30"  && currentdate.compareTo(mapRoutes[index]["Date"].toString()) == 0
+                              && mapRoutes[index]["Passengers"]!="null" && DEFAULT_FLAG) || (SIXTEEN_FOURTYFIVE_FLAG && mapRoutes[index]["Passengers"]!="null")){
                             print("the ride in the same day but the clock is after 4:29 PM");
                             var partTwo = mapRoutes[index]["Passengers"].toString().split(":")[0].split("{")[1];
                             Map<String,dynamic> myMap={partTwo:partTwo};
