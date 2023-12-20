@@ -24,6 +24,16 @@ class _MyScreenState extends State<MyScreen> {
   TextEditingController toController = TextEditingController();
   TextEditingController timeController = TextEditingController();
 
+  bool TWENTY_ONE_THERTY_FLAG = false;
+  bool TWENTY_TWO_THERTY_FLAG = false;
+  bool TWELVE_THERTY_FLAG = false;
+  bool THIRTEEN_THERTY_FLAG = false;
+  bool ONE_THERTY_FLAG = false;
+  bool DEFAULT_FLAG = true;
+
+
+
+
   void initState() {
 
     super.initState();
@@ -33,10 +43,7 @@ class _MyScreenState extends State<MyScreen> {
     currentTime = rm.getFormattedDateTimeWithoutSeconds().split(" ")[1];
     tommorowDate=rm.getTomorrowDate();
 
-    print(currentDate);
-    print(currentTime);
-    print(tommorowDate);
-    print(TESTMODE);
+    printTimeFlags();
 
 
   }
@@ -53,15 +60,15 @@ class _MyScreenState extends State<MyScreen> {
           setState(() {
 
 
-            if(currentTime.compareTo("12:59") <0 ){
-              print("current time before 1PM");
+            if((currentTime.compareTo("12:59") <0 && DEFAULT_FLAG) || TWELVE_THERTY_FLAG || ONE_THERTY_FLAG){
+              print("current time after Midnight and before 1PM");
 
               mapRoutes = data
                   .where((entry) =>
 
 
                   (entry.value['Time'] == "17:30" &&  ("${entry.value['Date']}".compareTo(currentDate)>=0))||
-                  (entry.value['Time'] == "7:30" &&  entry.value['Date'] == tommorowDate)
+                  (entry.value['Time'] == "7:30" &&  ("${entry.value['Date']}".compareTo(tommorowDate)>=0))
 
 
 
@@ -79,7 +86,7 @@ class _MyScreenState extends State<MyScreen> {
 
 
             }
-            else if(currentTime.compareTo("12:59") >0  && currentTime.compareTo("19:59") <0 ){
+            else if((currentTime.compareTo("12:59") >0  && currentTime.compareTo("21:59") <0 && DEFAULT_FLAG) || THIRTEEN_THERTY_FLAG || TWENTY_ONE_THERTY_FLAG ){
               print("current time after 1PM and before 10 PM");
               mapRoutes = data
                   .where((entry) =>
@@ -102,7 +109,7 @@ class _MyScreenState extends State<MyScreen> {
                 .toList();
 
             }
-            else if(currentTime.compareTo("19:59") >0 ){
+            else if((currentTime.compareTo("21:59") >0 && DEFAULT_FLAG) || TWENTY_TWO_THERTY_FLAG ){
               print("current time after  10 PM");
 
               mapRoutes = data
@@ -132,41 +139,23 @@ class _MyScreenState extends State<MyScreen> {
               print("you may missed a case");
 
             }
-
-
-
-
-
-
-            /* Main origional
-              mapRoutes = data
-                .map((entry) => Map<String, String>.from({
-              'From': '${entry.value['From']}',
-              'To': '${entry.value['To']}',
-              'Time': '${entry.value['Time']}',
-              'RoutID':'${entry.value['RoutID']}',
-              "Date":'${entry.value['Date']}',
-              "price":  '${entry.value['price']}',
-              "TripStatus":'${entry.value['TripStatus']}',
-            }))
-                .toList();*/
-
-
-
-
-
           });
-
-
-
-
-
-
         }//end of the if condition
       } else {
         print("Snapshot value is null");
       }
     });
+  }
+
+
+  printTimeFlags(){
+    print("TWENTY_ONE_THERTY_FLAG:${TWENTY_ONE_THERTY_FLAG}");
+    print("TWENTY_TWO_THERTY_FLAG:${TWENTY_TWO_THERTY_FLAG}");
+    print("TWELVE_THERTY_FLAG:${TWELVE_THERTY_FLAG}");
+    print("THIRTEEN_THERTY_FLAG:${THIRTEEN_THERTY_FLAG}");
+    print("ONE_THERTY_FLAG:${ONE_THERTY_FLAG}");
+    print("DEFAULT:${DEFAULT_FLAG}");
+    _setupDataListener();
   }
 
 
@@ -181,6 +170,97 @@ class _MyScreenState extends State<MyScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
+            Text("time to bypass for testing"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = true;
+                    TWENTY_TWO_THERTY_FLAG = false;
+                    TWELVE_THERTY_FLAG = false;
+                    THIRTEEN_THERTY_FLAG = false;
+                    ONE_THERTY_FLAG = false;
+                    DEFAULT_FLAG = false;
+                    printTimeFlags();
+                  },
+                  child:Text("21:30",style: TextStyle(fontSize: 15),),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = false;
+                    TWENTY_TWO_THERTY_FLAG = true;
+                    TWELVE_THERTY_FLAG = false;
+                    THIRTEEN_THERTY_FLAG = false;
+                    ONE_THERTY_FLAG = false;
+                    DEFAULT_FLAG = false;
+                    printTimeFlags();
+                  },
+                  child:Text("22:30",style: TextStyle(fontSize: 15),),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = false;
+                    TWENTY_TWO_THERTY_FLAG = false;
+                    TWELVE_THERTY_FLAG = true;
+                    THIRTEEN_THERTY_FLAG = false;
+                    ONE_THERTY_FLAG = false;
+                    DEFAULT_FLAG = false;
+                    printTimeFlags();
+                  },
+                  child:Text("12:30",style: TextStyle(fontSize: 15),),
+                ),
+
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = false;
+                    TWENTY_TWO_THERTY_FLAG = false;
+                    TWELVE_THERTY_FLAG = false;
+                    THIRTEEN_THERTY_FLAG = true;
+                    ONE_THERTY_FLAG = false;
+                    DEFAULT_FLAG = false;
+                    printTimeFlags();
+                  },
+                  child:Text("13:30",style: TextStyle(fontSize: 15),),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = false;
+                    TWENTY_TWO_THERTY_FLAG = false;
+                    TWELVE_THERTY_FLAG = false;
+                    THIRTEEN_THERTY_FLAG = false;
+                    ONE_THERTY_FLAG = true;
+                    DEFAULT_FLAG = false;
+                    printTimeFlags();
+                  },
+                  child:Text("1:30",style: TextStyle(fontSize: 15),),
+                ),
+                ElevatedButton(
+                  onPressed: (){
+                    TWENTY_ONE_THERTY_FLAG = false;
+                    TWENTY_TWO_THERTY_FLAG = false;
+                    TWELVE_THERTY_FLAG = false;
+                    THIRTEEN_THERTY_FLAG = false;
+                    ONE_THERTY_FLAG = false;
+                    DEFAULT_FLAG = true;
+                    printTimeFlags();
+                    },
+                  child:Text("default",style: TextStyle(fontSize: 15),),
+
+                ),
+              ],
+            ),
+            TWENTY_ONE_THERTY_FLAG?Text("Time is 21:30"):
+            TWENTY_TWO_THERTY_FLAG?Text("Time is 22:30"):
+            TWELVE_THERTY_FLAG?Text("Time is 12:30"):
+            THIRTEEN_THERTY_FLAG?Text("Time is 13:30"):
+            ONE_THERTY_FLAG?Text("Time is 1:30"):
+            Text("default Time"),
 
             Expanded(
               child: ListView.builder(

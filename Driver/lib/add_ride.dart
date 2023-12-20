@@ -20,7 +20,7 @@ class _Add_RideState extends State<Add_Ride> {
   String selectedTime = "7:30";
   String selectedPickupPoint = "Gate 3";
   String selectedDestination = "Gate 3";
-  DateTime selectedDate = DateTime.now().add(Duration(days: 1));
+  DateTime selectedDate = DateTime.now();
 
 
 
@@ -59,6 +59,7 @@ class _Add_RideState extends State<Add_Ride> {
         'TripStatus':"Availabe",
         'RoutID':routeID,
         'numberOfPassengers':'0',
+        'TESTFLAG':"false",
       });
 
       // Clear the text controllers after adding a route
@@ -83,8 +84,8 @@ class _Add_RideState extends State<Add_Ride> {
     final DateTime tomorrow = DateTime.now().add(Duration(days: 1));
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: tomorrow,
-        firstDate:tomorrow,
+        initialDate: DateTime.now(),
+        firstDate:DateTime.now(),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -222,34 +223,6 @@ class _Add_RideState extends State<Add_Ride> {
 
           ],
 
-
-          /*children: [
-          TextField(
-            controller: fromController,
-            decoration: InputDecoration(labelText: 'From'),
-          ),
-          TextField(
-            controller: toController,
-            decoration: InputDecoration(labelText: 'To'),
-          ),
-          TextField(
-            controller: timeController,
-            decoration: InputDecoration(labelText: 'Time'),
-          ),
-          TextField(
-            controller: priceController,
-            decoration: InputDecoration(labelText: 'Price'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _addRoute();
-              // Adding print statement to check mapRoutes after adding a route
-              //print("Updated mapRoutes: $mapRoutes");
-            },
-            child: Text('Add Route'),
-          ),
-
-        ],*/
         ),
 
 
