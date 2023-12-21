@@ -59,9 +59,10 @@ class Authentication_class {
       if (userFirebase != null) {
         DatabaseReference DriverRef = FirebaseDatabase.instance.ref().child(
             "users").child(userFirebase!.uid);
+
         DriverRef.once().then((snap) {
           if (snap.snapshot.value != null) {
-            if ((snap.snapshot.value as Map)["blockStatus"] == "no") {
+            if ((snap.snapshot.value as Map)["blockStatus"] == "no" && snap.snapshot.value.toString() != "null") {
               Navigator.pushReplacementNamed(context, '/home_screen');
             }
             else {
@@ -70,7 +71,7 @@ class Authentication_class {
             }
           } else {
             FirebaseAuth.instance.signOut();
-            rMethods.displaySnakBar("The Account Not Found As User", context);
+            rMethods.displaySnakBar("The Account Not Found As Passenger", context);
           }
         });
       }

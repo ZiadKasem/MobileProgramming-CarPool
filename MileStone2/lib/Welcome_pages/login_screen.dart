@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   logInFormValidation(){
     if(!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")){// try to find method to check last few digits
-      rm.displaySnakBar("Please SignUp with ASU Domain Email", context);
+      rm.displaySnakBar("Please Login with ASU Domain Email", context);
     }
     else if(passwordTextEditingController.text.trim().length<6){
       rm.displaySnakBar("Password Must Be Atleast 6 Charachters", context);
@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     else{
       if(emailTextEditingController.text == "test@eng.asu.edu.eg"){// used to bypass the authentication --for the aid of testing
         TESTMODE = 1;
+        print("entering TestMode");
         Navigator.pushReplacementNamed(context,'/home_screen');
       }
       else
@@ -47,9 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   LogInUser()async{
-    setState(() {
-      isLoading = true; // Set loading to true before starting the login process
-    });
+
 
     await AUTH
         .Log_in(emailTextEditingController.text.trim(),

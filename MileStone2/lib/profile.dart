@@ -158,7 +158,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Text("Save", style: TextStyle(color: Colors.white)),
             onPressed: () async {
               Navigator.of(context).pop(newValue);
-              await updateField(field, newValue);
+              if(newValue ==""){
+                rMethods.displaySnakBar("field can't be empty", context);
+              }else{
+                await updateField(field, newValue);
+              }
+
             },
           ),
         ],

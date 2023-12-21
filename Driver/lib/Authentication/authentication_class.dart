@@ -84,25 +84,34 @@ class Authentication_class{
     if(!context.mounted)return;
 
     if(userFirebase != null){
-      DatabaseReference DriverRef = FirebaseDatabase.instance.ref().child("Drivers").child(userFirebase!.uid);
+      DatabaseReference DriverRef = await FirebaseDatabase.instance.ref().child("Drivers").child(userFirebase!.uid);
+
       DriverRef.once().then((snap){
+        print(snap.snapshot.value);
         if(snap.snapshot.value != null){
 
-          if((snap.snapshot.value as Map)["blockStatus"] == "no"){
+          if((snap.snapshot.value as Map)["blockStatus"] == "no" && snap.snapshot.value.toString() != "null"){
             Navigator.pushReplacementNamed(context,'/home_screen');
           }
           else{
+
             FirebaseAuth.instance.signOut();
-            rMethods.displaySnakBar("This Account Is Blocked", context);
+            rMethods.displaySnakBar("The Account Not Found As Driver", context);
+
           }
 
         }else{
+
           FirebaseAuth.instance.signOut();
-          rMethods.displaySnakBar("The Account Not Found As User", context);
+          rMethods.displaySnakBar("The Account Not Found As Driver", context);
+
 
         }
 
 
+      }).onError((error, stackTrace) {
+        print("The Account Not Found As Driver");
+        rMethods.displaySnakBar("The Account Not Found As Driver", context);
       });
     }
 

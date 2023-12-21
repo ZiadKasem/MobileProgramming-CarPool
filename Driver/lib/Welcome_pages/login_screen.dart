@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   logInFormValidation() {
     if (!emailTextEditingController.text.endsWith("@eng.asu.edu.eg")) {
-      rMethods.displaySnakBar("Please SignUp with ASU Domain Email", context);
+      rMethods.displaySnakBar("Please Login with ASU Domain Email", context);
     } else if (passwordTextEditingController.text.trim().length < 6) {
       rMethods.displaySnakBar(
           "Password Must Be At Least 6 Characters", context);
@@ -46,18 +46,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   LogInUser() async {
-    setState(() {
-      isLoading = true; // Set loading to true before starting the login process
-    });
+
 
     await AUTH
         .Log_in(emailTextEditingController.text.trim(),
-        passwordTextEditingController.text.trim(), context)
-        .whenComplete(() {
-      setState(() {
-        isLoading = false; // Set loading to false when the login process is complete
-      });
-    });
+        passwordTextEditingController.text.trim(), context);
   }
 
   @override
