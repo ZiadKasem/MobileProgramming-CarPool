@@ -10,11 +10,11 @@ Additionally, a mobile application will be developed for drivers to confirm orde
 
 ## Documentation
 
-For detailed documentation of the project, please refer to [Documentation File]([link-to-documentation-file](https://github.com/ZiadKasem/MobileProgramming-CarPool/tree/master/Documentation)).
+For detailed documentation of the project, please refer to [Documentation File](https://github.com/ZiadKasem/MobileProgramming-CarPool/tree/master/Documentation).
 
 ## Video Demo
 
-Check out our video demo showcasing the features and functionality of Carpool 2.0: [Video Demo]([link-to-video](https://drive.google.com/file/d/1Qa9fiA2buVEiXOmwkUKgDITGi76xyibK/view)).
+Check out our video demo showcasing the features and functionality of Carpool 2.0: [Video Demo](https://drive.google.com/file/d/1Qa9fiA2buVEiXOmwkUKgDITGi76xyibK/view)).
 
 ## Specifications (Features)
 
